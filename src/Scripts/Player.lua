@@ -4,28 +4,38 @@ Player = Class {}
 PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 210, 390
 PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 120, 120
 CLEARED_BLOCK_SCORE = 10
+BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN = (PLAYZONE_HEIGHT + 120) / BLOCK_HEIGHT, PLAYZONE_WIDTH / BLOCK_WIDTH
 
 function Player:init(playzoneX, playzoneY)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
     self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = self._PLAYZONE_X + PLAYZONE_WIDTH + 50, self._PLAYZONE_Y
 
+    self._blocks = {} ---@type Block[][]
+    for row = 1, BLOCK_MATRIX_ROW do
+        self._blocks[row] = {}
+        for column = 1, BLOCK_MATRIX_COLUMN do
+            self._blocks[row][column] = nil
+        end
+    end
+
     self._activeTetromino = self:getNewTetromino() ---@type Tetromino
     self._activeTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
+    self._activeTetromino:getIndividualBlocks()
+    self:updateActiveBlocksInMatrix()
     self._nextTetromino = self:getNewTetromino()
     self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
-
-    self._inactiveTetrominoes = {} ---@type Tetromino[]
-    self._inactiveBlocks = {} ---@type Block[]
 
     self._score = 0
 end
 
 function Player:render()
-    self._activeTetromino:render()
-
-    for i = 1, #self._inactiveTetrominoes do
-        self._inactiveTetrominoes[i]:render()
+    for row = 1, BLOCK_MATRIX_ROW do
+        for column = 1, BLOCK_MATRIX_COLUMN do
+            if (self._blocks[row][column]) then
+                self._blocks[row][column]:render()
+            end
+        end
     end
 
     love.graphics.rectangle("line", self._PLAYZONE_X, self._PLAYZONE_Y, PLAYZONE_WIDTH, PLAYZONE_HEIGHT)
@@ -47,44 +57,83 @@ function Player:render()
 end
 
 function Player:update(dt)
-    for i = 1, #self._inactiveBlocks do
-        if (self._inactiveBlocks[i]._pos._y < 0) then
-            love.event.quit()
-        end
-    end
-
     if (self._activeTetromino:isStopped()) then
         self._nextTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
         self._activeTetromino = self._nextTetromino
+        self._activeTetromino:getIndividualBlocks()
+        self:updateActiveBlocksInMatrix()
         self._nextTetromino = self:getNewTetromino()
         self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
     end
 
+    if (TETROMINO_FALL_TIMER > 0) then
+        TETROMINO_FALL_TIMER = math.max(0, TETROMINO_FALL_TIMER - dt)
+    else
+        self:activeTetroFallUpdate()
+        TETROMINO_FALL_TIMER = 1
+
+        --- If activeTetromino is obstructed, stop it
+        for i = 1, #self._activeTetromino._def do
+            for j = 1, #self._activeTetromino._def[i] do
+                if (self._activeTetromino._blocks[i][j]) then
+                    local row, column =
+                        self._activeTetromino._blocks[i][j]:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
+                    if (row < BLOCK_MATRIX_ROW) then
+                        if (self._blocks[row + 1][column]) then
+                            if
+                                (self._activeTetromino._blocks[i][j]:isObstructedBy(self._blocks[row + 1][column]) and
+                                    self._activeTetromino ~= self._blocks[row + 1][column]._parentTetromino)
+                             then
+                                self._activeTetromino:stop()
+                                return
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
     self:tetrominoMovementUpdate(dt)
 
-    self._activeTetromino:update(dt)
+    if (self._activeTetromino:reachedBottom(self._PLAYZONE_Y)) then
+        self._activeTetromino:stop()
+        return
+    end
 end
 
 function Player:tetrominoMovementUpdate(dt)
     if (love.keyboard.wasPressed("space")) then
+        self:removeActiveBlocksInMatrix()
         self._activeTetromino:rotateNext()
+        self._activeTetromino:getIndividualBlocks()
 
         if (self:verifyMovement() == "invalid") then
             self._activeTetromino:rotatePrev()
+            self._activeTetromino:getIndividualBlocks()
         end
+        self:updateActiveBlocksInMatrix()
     end
     if (love.keyboard.wasPressed("left")) then
+        self:removeActiveBlocksInMatrix()
         self._activeTetromino:moveLeft()
+        self._activeTetromino:getIndividualBlocks()
 
         if (self:verifyMovement() == "invalid") then
             self._activeTetromino:moveRight()
+            self._activeTetromino:getIndividualBlocks()
         end
+        self:updateActiveBlocksInMatrix()
     elseif (love.keyboard.wasPressed("right")) then
+        self:removeActiveBlocksInMatrix()
         self._activeTetromino:moveRight()
+        self._activeTetromino:getIndividualBlocks()
 
         if (self:verifyMovement() == "invalid") then
             self._activeTetromino:moveLeft()
+            self._activeTetromino:getIndividualBlocks()
         end
+        self:updateActiveBlocksInMatrix()
     end
 
     if (love.keyboard.isDown("down")) then
@@ -92,15 +141,25 @@ function Player:tetrominoMovementUpdate(dt)
     end
 end
 
-function Player:verifyMovement(movement)
-    local activeBlocks = self._activeTetromino:getIndividualBlocks()
-    for i = 1, #activeBlocks do
-        if (activeBlocks[i]:isOutsidePlayzone()) then
-            return "invalid"
-        end
-        for j = 1, #self._inactiveBlocks do
-            if (activeBlocks[i]:collides(self._inactiveBlocks[j])) then
-                return "invalid"
+function Player:verifyMovement()
+    local currentBlock  ---@type Block
+    local row, column
+    for i = 1, #self._activeTetromino._def do
+        for j = 1, #self._activeTetromino._def[1] do
+            if (self._activeTetromino._blocks[i][j]) then
+                currentBlock = self._activeTetromino._blocks[i][j]
+                if
+                    (currentBlock._pos._x < self._PLAYZONE_X or
+                        currentBlock._pos._x > self._PLAYZONE_X + PLAYZONE_WIDTH - BLOCK_WIDTH) or
+                        (currentBlock._pos._y < self._PLAYZONE_Y or
+                            currentBlock._pos._y > self._PLAYZONE_Y + PLAYZONE_HEIGHT - BLOCK_HEIGHT)
+                 then
+                    return "invalid"
+                end
+                row, column = currentBlock:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
+                if (self._blocks[row][column]) then
+                    return "invalid"
+                end
             end
         end
     end
@@ -114,4 +173,34 @@ function Player:getNewTetromino()
     end
     local index = math.random(1, #shapes)
     return Tetromino(0, 0, shapes[index])
+end
+
+function Player:activeTetroFallUpdate()
+    self:removeActiveBlocksInMatrix()
+    self._activeTetromino:fall()
+    self:updateActiveBlocksInMatrix()
+end
+
+function Player:updateActiveBlocksInMatrix()
+    for i = 1, #self._activeTetromino._def do
+        for j = 1, #self._activeTetromino._def[i] do
+            if (self._activeTetromino._blocks[i][j]) then
+                local row, column =
+                    self._activeTetromino._blocks[i][j]:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
+                self._blocks[row][column] = self._activeTetromino._blocks[i][j]
+            end
+        end
+    end
+end
+
+function Player:removeActiveBlocksInMatrix()
+    for i = 1, #self._activeTetromino._def do
+        for j = 1, #self._activeTetromino._def[i] do
+            if (self._activeTetromino._blocks[i][j]) then
+                local row, column =
+                    self._activeTetromino._blocks[i][j]:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
+                self._blocks[row][column] = nil
+            end
+        end
+    end
 end

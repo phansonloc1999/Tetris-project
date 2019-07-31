@@ -20,7 +20,7 @@ TETROMINO_DEFS = {
             {0, 1, 0},
             {1, 1, 0}
         },
-        widthInPreview = 90, heightInPreview = 60
+        widthInPreview = 90, heightInPreview = 60,
     },
     L2 = {
         {

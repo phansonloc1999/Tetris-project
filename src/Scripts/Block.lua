@@ -38,7 +38,7 @@ function Block:getPosInMatrix(PLAYZONE_X, PLAYZONE_Y)
 end
 
 function Block:getRowInMatrix(PLAYZONE_Y)
-    return (self._pos._y - PLAYZONE_Y) / BLOCK_HEIGHT + 1
+    return (self._pos._y - (PLAYZONE_Y - 120)) / BLOCK_HEIGHT + 1
 end
 
 function Block:isObstructedBy(other)

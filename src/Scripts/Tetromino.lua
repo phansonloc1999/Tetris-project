@@ -12,6 +12,7 @@ function Tetromino:init(x, y, type)
     self._type = type
     self._currentRotation = 1
     self._def = TETROMINO_DEFS[self._type][self._currentRotation]
+    self._blocks = {} ---@type Block[][]
 
     self._isDissolved = false
 end
@@ -34,15 +35,6 @@ function Tetromino:render()
     love.graphics.setColor(1, 1, 1)
 end
 
-function Tetromino:update(dt)
-    if (TETROMINO_FALL_TIMER > 0) then
-        TETROMINO_FALL_TIMER = math.max(0, TETROMINO_FALL_TIMER - dt)
-    else
-        self:fall()
-        TETROMINO_FALL_TIMER = 1
-    end
-end
-
 function Tetromino:isStopped()
     return self._isStopped
 end
@@ -53,6 +45,14 @@ end
 
 function Tetromino:fall()
     self._pos._y = math.min(self._pos._y + TETROMINO_FALL_DISTANCE, WINDOW_HEIGHT - BLOCK_HEIGHT)
+
+    for i = 1, #self._def do
+        for j = 1, #self._def[i] do
+            if (self._blocks[i][j]) then
+                self._blocks[i][j]:fall()
+            end
+        end
+    end
 end
 
 function Tetromino:reachedBottom(PLAYZONE_Y)
@@ -86,10 +86,26 @@ end
 
 function Tetromino:moveLeft()
     self._pos._x = self._pos._x - BLOCK_WIDTH
+
+    for i = 1, #self._def do
+        for j = 1, #self._def[i] do
+            if (self._blocks[i][j]) then
+                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x - BLOCK_WIDTH 
+            end
+        end
+    end
 end
 
 function Tetromino:moveRight()
     self._pos._x = self._pos._x + BLOCK_WIDTH
+
+    for i = 1, #self._def do
+        for j = 1, #self._def[i] do
+            if (self._blocks[i][j]) then
+                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x + BLOCK_WIDTH 
+            end
+        end
+    end
 end
 
 function Tetromino:accelerate(dt)
@@ -114,19 +130,25 @@ function Tetromino:isObstructedBy(block)
 end
 
 function Tetromino:getIndividualBlocks()
+    self._blocks = {}
+
     local currentDef = (TETROMINO_DEFS[self._type])[self._currentRotation]
-    local Blocks = {}
+    for i = 1, #currentDef do
+        self._blocks[i] = {}
+        for j = 1, #currentDef[1] do
+            self._blocks[i][j] = nil
+        end
+    end
+
     for row = 1, #currentDef do
         for column = 1, #currentDef[1] do
             if (currentDef[row][column] == 1) then
-                table.insert(
-                    Blocks,
+                self._blocks[row][column] =
                     Block(self._pos._x + (column - 1) * BLOCK_WIDTH, self._pos._y + (row - 1) * BLOCK_HEIGHT, self)
-                )
             end
         end
     end
-    return Blocks
+    return self._blocks
 end
 
 function Tetromino:getWidth()
@@ -138,7 +160,7 @@ function Tetromino:getHeight()
 end
 
 function Tetromino:toSpawn(PLAYZONE_X, PLAYZONE_Y)
-    self._pos._x, self._pos._y = PLAYZONE_X + 30, PLAYZONE_Y - self:getHeight()
+    self._pos._x, self._pos._y = PLAYZONE_X + 30, PLAYZONE_Y - 120
 end
 
 function Tetromino:toPreview(PREVIEW_FRAME_X, PREVIEW_FRAME_Y)
