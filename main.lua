@@ -27,9 +27,9 @@ end
 function love.update(dt)
     require("lib/lovebird").update()
 
-    Timer.update(dt)
-
     if (not gGamePaused) then
+        Timer.update(dt)
+
         gStateMachine:update(dt)
     end
 

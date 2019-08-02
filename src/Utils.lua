@@ -24,9 +24,12 @@ function love.mouse.wasPressed(button)
     return love.mouse.buttonsPressed[button]
 end
 
--- Merge 2 tables (with numeric keys)
+-- Merge source into destination table (with numeric keys)
 function table.merge(destination, source)
     for i = 1, #source do
         table.insert(destination, source[i])
+    end
+    for key, value in pairs(source) do
+        destination[key] = value
     end
 end

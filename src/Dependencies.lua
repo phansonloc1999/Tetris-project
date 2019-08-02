@@ -3,6 +3,7 @@ require("src/Utils")
 
 Class = require("lib/class")
 Timer = require("lib/knife/Timer")
+Chain = require("lib/knife/Chain")
 
 require("src/Vector2")
 

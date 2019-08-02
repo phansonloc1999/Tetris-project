@@ -28,6 +28,7 @@ function Player:init(playzoneX, playzoneY)
     self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
 
     self._score = 0
+    self._isRemovingBlocks = false
 end
 
 function Player:render()
@@ -58,30 +59,34 @@ function Player:render()
 end
 
 function Player:update(dt)
-    if (self._activeTetromino:isStopped()) then
+    if (self._activeTetromino:isStopped() and not self._isRemovingBlocks) then
         self:rowClearanceUpdate()
 
-        self._nextTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
-        self._activeTetromino = self._nextTetromino
-        self._activeTetromino:getIndividualBlocks()
-        self:updateActiveBlocksInMatrix()
-        self._nextTetromino = self:getNewTetromino()
-        self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+        if (not self._isRemovingBlocks) then
+            self._nextTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
+            self._activeTetromino = self._nextTetromino
+            self._activeTetromino:getIndividualBlocks()
+            self:updateActiveBlocksInMatrix()
+            self._nextTetromino = self:getNewTetromino()
+            self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+        end
     end
 
-    if (TETROMINO_FALL_TIMER > 0) then
-        TETROMINO_FALL_TIMER = math.max(0, TETROMINO_FALL_TIMER - dt)
-    else
-        self:activeTetroFallUpdate()
-        TETROMINO_FALL_TIMER = 1
-        self:checkActiveForObstruction()
-    end
+    if (not self._isRemovingBlocks) then
+        if (TETROMINO_FALL_TIMER > 0) then
+            TETROMINO_FALL_TIMER = math.max(0, TETROMINO_FALL_TIMER - dt)
+        else
+            self:activeTetroFallUpdate()
+            TETROMINO_FALL_TIMER = 1
+            self:checkActiveForObstruction()
+        end
 
-    self:tetrominoMovementUpdate(dt)
+        self:tetrominoMovementUpdate(dt)
 
-    if (self._activeTetromino:reachedBottom(self._PLAYZONE_Y)) then
-        self._activeTetromino:stop()
-        return
+        if (self._activeTetromino:reachedBottom(self._PLAYZONE_Y)) then
+            self._activeTetromino:stop()
+            return
+        end
     end
 end
 
@@ -200,12 +205,61 @@ function Player:rowClearanceUpdate()
             end
         end
     end
-    local clearedRows = {}
     if (#rowsNewlyFilled > 0) then
-        clearedRows = self:clearCompletedRows(rowsNewlyFilled)
+        self._clearedRows = self:clearCompletedRows(rowsNewlyFilled)
     end
-    for i = 1, #clearedRows do
-        for row = clearedRows[i] - 1, 1, -1 do
+end
+
+function Player:clearCompletedRows(rowsNewlyFilled)
+    local clearedRows = {}
+    local blocksPosToClear = {}
+    local blockDefinitions = {}
+    local targetOpacity = {_opacity = 0}
+    for i = 1, #rowsNewlyFilled do
+        local blocksCounter = 0
+        for j = 1, BLOCK_MATRIX_COLUMN do
+            if (self._blocks[rowsNewlyFilled[i]][j]) then
+                blocksCounter = blocksCounter + 1
+            end
+        end
+        if (blocksCounter == BLOCK_MATRIX_COLUMN) then
+            for j = 1, BLOCK_MATRIX_COLUMN do
+                local currentBlock = self._blocks[rowsNewlyFilled[i]][j] ---@type Block
+                table.insert(blocksPosToClear, {rowsNewlyFilled[i], j})
+                table.merge(blockDefinitions, {[currentBlock] = targetOpacity})
+            end
+
+            self._isRemovingBlocks = true
+
+            --- Tween opacity of cleared blocks, clear blocks in matrix and above blocks fall update
+            Chain(
+                function(go, blockDefinitions, blocksPosToClear, player)
+                    Timer.tween(2, blockDefinitions):finish(
+                        function()
+                            if (#player._clearedRows > 0) then
+                                local row, column
+                                for i = 1, #blocksPosToClear do
+                                    row, column = blocksPosToClear[i][1], blocksPosToClear[i][2]
+                                    player._blocks[row][column] = nil
+                                end
+                                player:fallAfterClearance()
+                                player._isRemovingBlocks = false
+                            end
+                        end
+                    )
+                end
+            )(nil, blockDefinitions, blocksPosToClear, self)
+
+            table.insert(clearedRows, rowsNewlyFilled[i])
+            self._score = self._score + BLOCK_SCORE * BLOCK_MATRIX_COLUMN
+        end
+    end
+    return clearedRows
+end
+
+function Player:fallAfterClearance()
+    for i = 1, #self._clearedRows do
+        for row = self._clearedRows[i] - 1, 1, -1 do
             for column = 1, BLOCK_MATRIX_COLUMN do
                 if (self._blocks[row][column]) then
                     self._blocks[row][column]:fall()
@@ -217,26 +271,7 @@ function Player:rowClearanceUpdate()
             end
         end
     end
-end
-
-function Player:clearCompletedRows(rows)
-    local clearedRows = {}
-    for i = 1, #rows do
-        local blocksCounter = 0
-        for j = 1, BLOCK_MATRIX_COLUMN do
-            if (self._blocks[rows[i]][j]) then
-                blocksCounter = blocksCounter + 1
-            end
-        end
-        if (blocksCounter == BLOCK_MATRIX_COLUMN) then
-            table.insert(clearedRows, rows[i])
-            for j = 1, BLOCK_MATRIX_COLUMN do
-                self._blocks[rows[i]][j] = nil
-            end
-            self._score = self._score + BLOCK_SCORE * BLOCK_MATRIX_COLUMN
-        end
-    end
-    return clearedRows
+    self._clearedRows = {}
 end
 
 function Player:checkActiveForObstruction()
