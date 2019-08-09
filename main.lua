@@ -10,9 +10,12 @@ function love.load()
         StateMachine {
         ["play"] = function()
             return PlayState()
+        end,
+        ["menu"] = function()
+            return MenuState()
         end
     }
-    gStateMachine:change("play")
+    gStateMachine:change("menu")
 
     gGamePaused = false
 end
