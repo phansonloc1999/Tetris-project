@@ -40,3 +40,23 @@ end
 function RectButton:setPos(newX, newY)
     self._hitbox._pos._x, self._hitbox._pos._y = newX, newY
 end
+
+function RectButton:getX()
+    return self._hitbox._pos._x
+end
+
+function RectButton:getY()
+    return self._hitbox._pos._y
+end
+
+function RectButton:getPos()
+    return self:getX(), self:getY()
+end
+
+function RectButton:getWidth()
+    return self._hitbox._width
+end
+
+function RectButton:getHeight()
+    return self._hitbox._height
+end

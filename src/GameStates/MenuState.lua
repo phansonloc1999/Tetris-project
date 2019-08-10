@@ -12,7 +12,7 @@ function MenuState:init()
         BUTTON_WIDTH,
         BUTTON_HEIGHT,
         function()
-            gStateMachine:change("play")
+            gStateMachine:change("select-mode")
         end,
         nil,
         nil

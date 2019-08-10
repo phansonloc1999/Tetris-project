@@ -14,6 +14,9 @@ function love.load()
         ["menu"] = function()
             return MenuState()
         end,
+        ["select-mode"] = function()
+            return SelectModeState()
+        end,
         ["play"] = function()
             return PlayState()
         end

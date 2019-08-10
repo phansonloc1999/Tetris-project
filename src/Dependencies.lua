@@ -14,11 +14,11 @@ require("src/BaseState")
 require("src/StateStack")
 require("src/GameStates/TitleScreenState")
 require("src/GameStates/MenuState")
+require("src/GameStates/SelectModeState")
 require("src/GameStates/PlayState")
 require("src/StateMachine")
 
 require("src/Scripts/Block")
 require("src/Scripts/Tetromino_defs")
 require("src/Scripts/Tetromino")
-
 require("src/Scripts/Player")
