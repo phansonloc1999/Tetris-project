@@ -12,8 +12,9 @@ require("src/UI/RectButton")
 
 require("src/BaseState")
 require("src/StateStack")
-require("src/GameStates/PlayState")
+require("src/GameStates/TitleScreenState")
 require("src/GameStates/MenuState")
+require("src/GameStates/PlayState")
 require("src/StateMachine")
 
 require("src/Scripts/Block")
