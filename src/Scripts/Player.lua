@@ -73,11 +73,11 @@ function Player:update(dt)
     end
 
     if (not self._isRemovingBlocks) then
-        if (TETROMINO_FALL_TIMER > 0) then
-            TETROMINO_FALL_TIMER = math.max(0, TETROMINO_FALL_TIMER - dt)
+        if (self._activeTetromino._accelerateTimer > 0) then
+            self._activeTetromino._accelerateTimer = math.max(0, self._activeTetromino._accelerateTimer - dt)
         else
             self:activeTetroFallUpdate()
-            TETROMINO_FALL_TIMER = 1
+            self._activeTetromino._accelerateTimer = 1
             self:checkActiveForObstruction()
         end
 

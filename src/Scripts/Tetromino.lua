@@ -15,6 +15,7 @@ function Tetromino:init(x, y, type)
     self._blocks = {} ---@type Block[][]
 
     self._isDissolved = false
+    self._accelerateTimer = TETROMINO_FALL_TIMER
 end
 
 function Tetromino:render()
@@ -109,7 +110,7 @@ function Tetromino:moveRight()
 end
 
 function Tetromino:accelerate(dt)
-    TETROMINO_FALL_TIMER = TETROMINO_FALL_TIMER - TETROMINO_ACCELARATE_SPEED * dt
+    self._accelerateTimer = self._accelerateTimer - TETROMINO_ACCELARATE_SPEED * dt
 end
 
 ---@param block Block
