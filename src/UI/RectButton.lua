@@ -1,21 +1,22 @@
 ---@class RectButton
 RectButton = Class {}
 
-function RectButton:init(x, y, width, height, funcOnClick, textures, animations)
-    self._hitbox = RectHitbox(x, y, width, height)
-    self._textures = textures
+function RectButton:init(x, y, funcOnClick, textures, defaultTexture, animations)
+    self._hitbox = RectHitbox(x, y, 0, 0)
+    self._textures = textures ---@type Image[]
     self._animations = animations
     self._funcOnClick = funcOnClick
 
     if (textures) then
-        self._currentTexture = "default"
+        self._currentTexture = defaultTexture
         assert(self._textures[self._currentTexture], "Default texture must exist!")
+        self._hitbox._width, self._hitbox._height =
+            self._textures[self._currentTexture]:getWidth(),
+            self._textures[self._currentTexture]:getHeight()
     end
 end
 
 function RectButton:render()
-    self._hitbox:render()
-
     if (self._textures) then
         love.graphics.draw(self._textures[self._currentTexture], self._hitbox._pos._x, self._hitbox._pos._y)
     end
@@ -59,4 +60,38 @@ end
 
 function RectButton:getHeight()
     return self._hitbox._height
+end
+
+function RectButton:onSelect()
+    if (not self._selected) then
+        self._currentTexture = "selected"
+
+        self._hitbox._pos:setPos(
+            self._hitbox._pos._x + self._hitbox._width / 2 - self._textures[self._currentTexture]:getWidth() / 2,
+            self._hitbox._pos._y + self._hitbox._height / 2 - self._textures[self._currentTexture]:getHeight() / 2
+        )
+
+        self._hitbox._width, self._hitbox._height =
+            self._textures[self._currentTexture]:getWidth(),
+            self._textures[self._currentTexture]:getHeight()
+
+        self._selected = true
+    end
+end
+
+function RectButton:onDeselect()
+    if (self._selected) then
+        self._currentTexture = "deselected"
+
+        self._hitbox._pos:setPos(
+            self._hitbox._pos._x + self._hitbox._width / 2 - self._textures[self._currentTexture]:getWidth() / 2,
+            self._hitbox._pos._y + self._hitbox._height / 2 - self._textures[self._currentTexture]:getHeight() / 2
+        )
+
+        self._hitbox._width, self._hitbox._height =
+            self._textures[self._currentTexture]:getWidth(),
+            self._textures[self._currentTexture]:getHeight()
+
+        self._selected = false
+    end
 end

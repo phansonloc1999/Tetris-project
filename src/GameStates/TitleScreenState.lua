@@ -2,29 +2,53 @@
 TitleScreenState = Class {__includes = BaseState}
 
 function TitleScreenState:init()
-    self._goText = love.graphics.newText(gFonts.large, "GO!")
-    self._anyKeyText = love.graphics.newText(gFonts.small, "PRESS ANY KEY TO CONTINUE")
+    self._buttons = {}
+    self._buttons.go =
+        RectButton(
+        WINDOW_WIDTH / 2 - gTextures.buttons.go.deselected:getWidth() / 2,
+        300,
+        function()
+            gStateMachine:change("menu")
+        end,
+        {
+            selected = gTextures.buttons.go.selected,
+            deselected = gTextures.buttons.go.deselected
+        },
+        "deselected"
+    )
+
+    self._buttons.back =
+        RectButton(
+        self._buttons.go:getX(),
+        self._buttons.go:getY() + self._buttons.go:getHeight() + 20,
+        function()
+            love.event.quit()
+        end,
+        {
+            selected = gTextures.buttons.quit.selected,
+            deselected = gTextures.buttons.quit.deselected
+        },
+        "deselected"
+    )
 end
 
 function TitleScreenState:render()
-    love.graphics.draw(
-        self._goText,
-        WINDOW_WIDTH / 2 - self._goText:getWidth() / 2,
-        WINDOW_HEIGHT / 2 - self._goText:getHeight() / 2 + 40
-    )
-    love.graphics.draw(
-        self._anyKeyText,
-        WINDOW_WIDTH / 2 - self._anyKeyText:getWidth() / 2,
-        WINDOW_HEIGHT / 2 - self._goText:getHeight() / 2 + 40 + self._goText:getHeight() + 10
-    )
+    love.graphics.draw(gTextures["title-screen"])
+
+    for key, button in pairs(self._buttons) do
+        button:render()
+    end
 end
 
 function TitleScreenState:update(dt)
-    local keysPressedCounter = 0
-    for key, keyPressed in pairs(love.keyboard.keysPressed) do
-        keysPressedCounter = keysPressedCounter + 1
-    end
-    if (keysPressedCounter > 0) then
-        gStateMachine:change("menu")
+    for key, button in pairs(self._buttons) do
+        if (button:collidesWithMouse()) then
+            button:onSelect()
+            if (love.mouse.wasPressed(1)) then
+                button:onClick()
+            end
+        elseif (button._selected) then
+            button:onDeselect()
+        end
     end
 end

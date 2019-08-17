@@ -17,8 +17,7 @@ function RectHitbox:render()
 end
 
 function RectHitbox:collides(other)
-    return self._pos._x < other._pos._x + other._width 
-    and other._pos._x < self._pos._x + self._width 
-    and self._pos._y < other._pos._y + other._height 
-    and other._pos._y < self._pos._y + self._height
+    return self._pos._x < other._pos._x + other._width and other._pos._x < self._pos._x + self._width and
+        self._pos._y < other._pos._y + other._height and
+        other._pos._y < self._pos._y + self._height
 end
