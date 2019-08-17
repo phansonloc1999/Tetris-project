@@ -17,6 +17,9 @@ function love.load()
         ["select-mode"] = function()
             return SelectModeState()
         end,
+        ["select-animal"] = function()
+            return SelectAnimalState()
+        end,
         ["play"] = function()
             return PlayState()
         end
@@ -24,16 +27,16 @@ function love.load()
     gStateMachine:change("title-screen")
 
     gGamePaused = false
- 
+
     gFPSCounter = love.graphics.newText(gFonts.small)
 end
 
 function love.draw()
     love.graphics.setColor(0, 1, 0)
-    gFPSCounter:set("FPS: "..love.timer.getFPS())
+    gFPSCounter:set("FPS: " .. love.timer.getFPS())
     love.graphics.draw(gFPSCounter, 0, WINDOW_HEIGHT - gFPSCounter:getHeight())
     love.graphics.setColor(1, 1, 1)
-    
+
     gStateMachine:render()
 end
 

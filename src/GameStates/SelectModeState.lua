@@ -23,10 +23,10 @@ end
 function SelectModeState:update(dt)
     if (love.mouse.wasPressed(1)) then
         if (self._1playerMode:collidesWithMouse()) then
-            gStateMachine:change("play", {numOfPlayers = 1})
+            gStateMachine:change("select-animal", {numOfPlayers = 1})
         end
         if (self._2playerMode:collidesWithMouse()) then
-            gStateMachine:change("play", {numOfPlayers = 2})
+            gStateMachine:change("select-animal", {numOfPlayers = 2})
         end
     end
 end

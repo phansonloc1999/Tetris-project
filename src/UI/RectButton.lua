@@ -1,5 +1,5 @@
 ---@class RectButton
-RectButton = Class{}
+RectButton = Class {}
 
 function RectButton:init(x, y, width, height, funcOnClick, textures, animations)
     self._hitbox = RectHitbox(x, y, width, height)
@@ -33,8 +33,8 @@ function RectButton:collidesWithMouse()
     return self._hitbox:collides(mouse)
 end
 
-function RectButton:onClick(params)
-    self._funcOnClick(params)
+function RectButton:onClick(...)
+    self._funcOnClick(...)
 end
 
 function RectButton:setPos(newX, newY)
