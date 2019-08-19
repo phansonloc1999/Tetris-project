@@ -106,8 +106,6 @@ function MenuState:init()
         "deselected"
     )
 
-    print(gTextures.pet_emotes.pet2.deselected:getHeight())
-
     self._emotes.pet2[2] =
         RectButton(
         self._buttons.quitButton:getX() - INDENT_TO_BUTTONS - gTextures.pet_emotes.pet2.deselected:getWidth(),
@@ -131,7 +129,11 @@ end
 function MenuState:render()
     love.graphics.draw(gTextures.background)
 
-    love.graphics.draw(gTextures.titles.menu, WINDOW_WIDTH / 2 - gTextures.titles.menu:getWidth() / 2, 30)
+    love.graphics.draw(
+        gTextures.titles.menu,
+        WINDOW_WIDTH / 2 - gTextures.titles.menu:getWidth() / 2,
+        TITLE_TOP_SPACING
+    )
 
     for key, button in pairs(self._buttons) do
         button:render()
