@@ -32,12 +32,12 @@ function love.load()
 end
 
 function love.draw()
+    gStateMachine:render()
+
     love.graphics.setColor(0, 1, 0)
     gFPSCounter:set("FPS: " .. love.timer.getFPS())
     love.graphics.draw(gFPSCounter, 0, WINDOW_HEIGHT - gFPSCounter:getHeight())
     love.graphics.setColor(1, 1, 1)
-
-    gStateMachine:render()
 end
 
 function love.update(dt)
