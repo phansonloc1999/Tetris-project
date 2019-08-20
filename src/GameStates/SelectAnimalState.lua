@@ -1,117 +1,67 @@
 ---@class SelectAnimalState
 SelectAnimalState = Class {__includes = BaseState}
 
-local DOG_TEXTURE = love.graphics.newImage("assets/dog.png")
-local CAT_TEXTURE = love.graphics.newImage("assets/cat.png")
-
-local ANIMALS = {CAT = 1, DOG = 2}
-
-local ARROW_BUTTON_WIDTH, ARROW_BUTTON_HEIGHT = 20, 20
-
 function SelectAnimalState:init()
-    self._player1 = {
-        animal = ANIMALS.CAT,
-        textureX = WINDOW_WIDTH / 4 - DOG_TEXTURE:getWidth() / 2,
-        textureY = WINDOW_HEIGHT / 2 - DOG_TEXTURE:getHeight() / 2 - 50
-    }
-    self._player2 = {
-        animal = ANIMALS.CAT,
-        textureX = 3 * WINDOW_WIDTH / 4 - DOG_TEXTURE:getWidth() / 2,
-        textureY = WINDOW_HEIGHT / 2 - DOG_TEXTURE:getHeight() / 2 - 50
-    }
-
     self._buttons = {}
-
-    self._buttons.player1Left =
-        RectButton(
-        self._player1.textureX + DOG_TEXTURE:getWidth() / 2 - 10 - ARROW_BUTTON_WIDTH,
-        self._player1.textureY + DOG_TEXTURE:getHeight() + 10,
-        ARROW_BUTTON_WIDTH,
-        ARROW_BUTTON_HEIGHT,
-        function(params)
-            params._player1.animal = params._player1.animal == ANIMALS.CAT and ANIMALS.DOG or ANIMALS.CAT
-        end
-    )
-    self._buttons.player1Right =
-        RectButton(
-        self._player1.textureX + DOG_TEXTURE:getWidth() / 2 + 10,
-        self._player1.textureY + DOG_TEXTURE:getHeight() + 10,
-        ARROW_BUTTON_WIDTH,
-        ARROW_BUTTON_HEIGHT,
-        function(params)
-            params._player1.animal = params._player1.animal == ANIMALS.CAT and ANIMALS.DOG or ANIMALS.CAT
-        end
-    )
-
-    self._buttons.player2Left =
-        RectButton(
-        self._player2.textureX + DOG_TEXTURE:getWidth() / 2 - 10 - ARROW_BUTTON_WIDTH,
-        self._player2.textureY + DOG_TEXTURE:getHeight() + 10,
-        ARROW_BUTTON_WIDTH,
-        ARROW_BUTTON_HEIGHT,
-        function(params)
-            params._player2.animal = params._player2.animal == ANIMALS.CAT and ANIMALS.DOG or ANIMALS.CAT
-        end
-    )
-    self._buttons.player2Right =
-        RectButton(
-        self._player2.textureX + DOG_TEXTURE:getWidth() / 2 + 10,
-        self._player2.textureY + DOG_TEXTURE:getHeight() + 10,
-        ARROW_BUTTON_WIDTH,
-        ARROW_BUTTON_HEIGHT,
-        function(params)
-            params._player2.animal = params._player2.animal == ANIMALS.CAT and ANIMALS.DOG or ANIMALS.CAT
-        end
-    )
-
-    self._buttons.ok =
-        RectButton(
-        WINDOW_WIDTH / 2 - 40,
-        self._buttons.player1Left:getY() + self._buttons.player1Left:getHeight() + 60,
-        80,
-        30,
-        function(params)
-            gStateMachine:change("play", {numOfPlayers = params._numOfPlayer})
-        end
-    )
+    self._emotes = {}
 
     self._buttons.back =
         RectButton(
-        self._buttons.ok:getX(),
-        self._buttons.ok:getY() + self._buttons.ok:getHeight() + 20,
-        80,
-        30,
+        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        WINDOW_HEIGHT - 70,
         function()
             gStateMachine:change("select-mode")
-        end
+        end,
+        {
+            deselected = gTextures.buttons.back.deselected,
+            selected = gTextures.buttons.back.selected
+        },
+        "deselected"
     )
+
+    self._animalTextures = {
+        cat = gTextures.animal_emotes.cat,
+        dog = gTextures.animal_emotes.dog
+    }
 end
 
 function SelectAnimalState:render()
-    if (self._player1.animal == ANIMALS.CAT) then
-        love.graphics.draw(CAT_TEXTURE, self._player1.textureX, self._player1.textureY)
-    else
-        love.graphics.draw(DOG_TEXTURE, self._player1.textureX, self._player1.textureY)
-    end
+    love.graphics.draw(gTextures.background)
 
-    if (self._numOfPlayer == 2) then
-        if (self._player2.animal == ANIMALS.CAT) then
-            love.graphics.draw(CAT_TEXTURE, self._player2.textureX, self._player2.textureY)
-        else
-            love.graphics.draw(DOG_TEXTURE, self._player2.textureX, self._player2.textureY)
-        end
-    end
+    love.graphics.draw(
+        gTextures.titles.animalselect,
+        WINDOW_WIDTH / 2 - gTextures.titles.animalselect:getWidth() / 2,
+        TITLE_TOP_SPACING
+    )
 
     for key, button in pairs(self._buttons) do
         button:render()
     end
+
+    for key, emote in pairs(self._emotes) do
+        emote:render()
+    end
 end
 
 function SelectAnimalState:update(dt)
-    if (love.mouse.wasPressed(1)) then
-        for key, button in pairs(self._buttons) do
-            if (button:collidesWithMouse()) then
+    for key, button in pairs(self._buttons) do
+        if (button:collidesWithMouse()) then
+            button:onSelect()
+            if (button._emoteMappings) then
+                for i = 1, #button._emoteMappings do
+                    button._emoteMappings[i]:onSelect()
+                end
+            end
+
+            if (love.mouse.wasPressed(1)) then
                 button:onClick(self)
+            end
+        elseif (button._selected) then
+            button:onDeselect()
+            if (button._emoteMappings) then
+                for i = 1, #button._emoteMappings do
+                    button._emoteMappings[i]:onDeselect()
+                end
             end
         end
     end
@@ -121,15 +71,174 @@ function SelectAnimalState:enter(params)
     self._numOfPlayer = params.numOfPlayers
 
     if (self._numOfPlayer == 1) then
-        self._player1.textureX, self._player1.textureY =
-            WINDOW_WIDTH / 2 - DOG_TEXTURE:getWidth() / 2,
-            WINDOW_HEIGHT / 2 - 100
-
-        self._buttons.player2Left, self._buttons.player2Right = nil, nil
-        self._buttons.player1Left:setPos(
-            WINDOW_WIDTH / 2 - ARROW_BUTTON_WIDTH - 10,
-            self._player1.textureY + DOG_TEXTURE:getHeight()
+        self._buttons.cat =
+            RectButton(
+            WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
+            WINDOW_HEIGHT / 2 + 50,
+            function()
+                gStateMachine:change("play", {numOfPlayers = 1, animal = "cat"})
+            end,
+            {
+                deselected = gTextures.buttons.cat.deselected,
+                selected = gTextures.buttons.cat.selected
+            },
+            "deselected"
         )
-        self._buttons.player1Right:setPos(WINDOW_WIDTH / 2 + 10, self._player1.textureY + DOG_TEXTURE:getHeight())
+
+        self._buttons.dog =
+            RectButton(
+            WINDOW_WIDTH / 2 + 50,
+            WINDOW_HEIGHT / 2 + 50,
+            function()
+                gStateMachine:change("play", {numOfPlayers = 1, animal = "dog"})
+            end,
+            {
+                deselected = gTextures.buttons.dog.deselected,
+                selected = gTextures.buttons.dog.selected
+            },
+            "deselected"
+        )
+
+        self._emotes = {}
+
+        self._emotes.cat =
+            RectButton(
+            self._buttons.cat:getX() + self._buttons.cat:getWidth() / 2 -
+                gTextures.animal_emotes.cat.deselected:getWidth() / 2,
+            self._buttons.cat:getY() - 20 - gTextures.animal_emotes.cat.deselected:getHeight(),
+            function()
+            end,
+            {
+                deselected = gTextures.animal_emotes.cat.deselected,
+                selected = gTextures.animal_emotes.cat.selected
+            },
+            "deselected"
+        )
+
+        self._emotes.dog =
+            RectButton(
+            self._buttons.dog:getX() + self._buttons.dog:getWidth() / 2 -
+                gTextures.animal_emotes.dog.deselected:getWidth() / 2,
+            self._buttons.dog:getY() - 20 - gTextures.animal_emotes.dog.deselected:getHeight(),
+            function()
+            end,
+            {
+                deselected = gTextures.animal_emotes.dog.deselected,
+                selected = gTextures.animal_emotes.dog.selected
+            },
+            "deselected"
+        )
+
+        self._buttons.cat._emoteMappings = {self._emotes.cat}
+        self._buttons.dog._emoteMappings = {self._emotes.dog}
+    else
+        local NEXT_PREV_BUTTONS_SPACING = 20
+
+        self._player1Animal, self._player2Animal = "cat", "cat"
+
+        self._emotes.player1Animal =
+            RectButton(
+            WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50 +
+                gTextures.buttons.oneplayer.deselected:getWidth() / 2 -
+                gTextures.mode_emotes.oneplayer.deselected:getWidth() / 2,
+            WINDOW_HEIGHT / 2 + 30 - gTextures.mode_emotes.oneplayer.deselected:getHeight(),
+            function()
+            end,
+            gTextures.animal_emotes.cat,
+            "deselected"
+        )
+
+        self._emotes.player2Animal =
+            RectButton(
+            WINDOW_WIDTH / 2 + 50 + gTextures.buttons.twoplayer.deselected:getWidth() / 2 -
+                gTextures.mode_emotes.twoplayer.deselected:getWidth() / 2,
+            self._emotes.player1Animal:getY(),
+            function()
+            end,
+            gTextures.animal_emotes.cat,
+            "deselected"
+        )
+
+        self._buttons.player1Prev =
+            RectButton(
+            self._emotes.player1Animal:getX() + self._emotes.player1Animal:getWidth() / 2 -
+                NEXT_PREV_BUTTONS_SPACING / 2 -
+                gTextures.buttons.next.deselected:getWidth(),
+            self._emotes.player1Animal:getY() + self._emotes.player1Animal:getHeight() + 10,
+            function(thisGameState)
+                thisGameState._emotes.player1Animal._textures =
+                    thisGameState._emotes.player1Animal._textures == gTextures.animal_emotes.cat and
+                    gTextures.animal_emotes.dog or
+                    gTextures.animal_emotes.cat
+                thisGameState._player1Animal = thisGameState._player1Animal == "cat" and "dog" or "cat"
+            end,
+            gTextures.buttons.prev,
+            "deselected"
+        )
+
+        self._buttons.player1Next =
+            RectButton(
+            self._emotes.player1Animal:getX() + self._emotes.player1Animal:getWidth() / 2 +
+                NEXT_PREV_BUTTONS_SPACING / 2,
+            self._emotes.player1Animal:getY() + self._emotes.player1Animal:getHeight() + 10,
+            function(thisGameState)
+                thisGameState._emotes.player1Animal._textures =
+                    thisGameState._emotes.player1Animal._textures == gTextures.animal_emotes.cat and
+                    gTextures.animal_emotes.dog or
+                    gTextures.animal_emotes.cat
+                thisGameState._player1Animal = thisGameState._player1Animal == "cat" and "dog" or "cat"
+            end,
+            gTextures.buttons.next,
+            "deselected"
+        )
+
+        self._buttons.player2Prev =
+            RectButton(
+            self._emotes.player2Animal:getX() + self._emotes.player2Animal:getWidth() / 2 -
+                NEXT_PREV_BUTTONS_SPACING / 2 -
+                gTextures.buttons.next.deselected:getWidth(),
+            self._emotes.player2Animal:getY() + self._emotes.player2Animal:getHeight() + 10,
+            function(thisGameState)
+                thisGameState._emotes.player2Animal._textures =
+                    thisGameState._emotes.player2Animal._textures == gTextures.animal_emotes.cat and
+                    gTextures.animal_emotes.dog or
+                    gTextures.animal_emotes.cat
+                thisGameState._player2Animal = thisGameState._player2Animal == "cat" and "dog" or "cat"
+            end,
+            gTextures.buttons.prev,
+            "deselected"
+        )
+
+        self._buttons.player2Next =
+            RectButton(
+            self._emotes.player2Animal:getX() + self._emotes.player2Animal:getWidth() / 2 +
+                NEXT_PREV_BUTTONS_SPACING / 2,
+            self._emotes.player2Animal:getY() + self._emotes.player2Animal:getHeight() + 10,
+            function(thisGameState)
+                thisGameState._emotes.player2Animal._textures =
+                    thisGameState._emotes.player2Animal._textures == gTextures.animal_emotes.cat and
+                    gTextures.animal_emotes.dog or
+                    gTextures.animal_emotes.cat
+                thisGameState._player2Animal = thisGameState._player2Animal == "cat" and "dog" or "cat"
+            end,
+            gTextures.buttons.next,
+            "deselected"
+        )
+
+        self._buttons.ok =
+            RectButton(
+            self._buttons.back:getX(),
+            self._buttons.back:getY() - 10 - gTextures.buttons.ok.deselected:getHeight(),
+            function()
+                gStateMachine:change("play", {numOfPlayers = 2})
+            end,
+            gTextures.buttons.ok,
+            "deselected"
+        )
+
+        self._buttons.ok._emoteMappings = {
+            self._emotes.player1Animal,
+            self._emotes.player2Animal
+        }
     end
 end

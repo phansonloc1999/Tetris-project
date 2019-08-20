@@ -35,7 +35,7 @@ function SelectModeState:init()
     self._buttons.back =
         RectButton(
         WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
-        WINDOW_HEIGHT - 130,
+        WINDOW_HEIGHT - 100,
         function()
             gStateMachine:change("menu")
         end,

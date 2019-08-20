@@ -45,11 +45,32 @@ gTextures = {
         back = {
             deselected = love.graphics.newImage("assets/buttons/back deselected.png"),
             selected = love.graphics.newImage("assets/buttons/back selected.png")
+        },
+        dog = {
+            deselected = love.graphics.newImage("assets/buttons/dog deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/dog selected.png")
+        },
+        cat = {
+            deselected = love.graphics.newImage("assets/buttons/cat deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/cat selected.png")
+        },
+        next = {
+            deselected = love.graphics.newImage("assets/buttons/next deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/next selected.png")
+        },
+        prev = {
+            deselected = love.graphics.newImage("assets/buttons/previous deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/previous selected.png")
+        },
+        ok = {
+            deselected = love.graphics.newImage("assets/buttons/ok deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/ok selected.png")
         }
     },
     titles = {
         menu = love.graphics.newImage("assets/titles/menu.png"),
-        mode = love.graphics.newImage("assets/titles/game mode.png")
+        mode = love.graphics.newImage("assets/titles/game mode.png"),
+        animalselect = love.graphics.newImage("assets/titles/animal select.png")
     },
     pet_emotes = {
         pet1 = {
@@ -69,6 +90,16 @@ gTextures = {
         twoplayer = {
             deselected = love.graphics.newImage("assets/select mode/2 players deselected.png"),
             selected = love.graphics.newImage("assets/select mode/2 players selected.png")
+        }
+    },
+    animal_emotes = {
+        dog = {
+            deselected = love.graphics.newImage("assets/select animal/1 player pet 1 deselected.png"),
+            selected = love.graphics.newImage("assets/select animal/1 player pet 1 selected.png")
+        },
+        cat = {
+            deselected = love.graphics.newImage("assets/select animal/1 player pet 2 deselected.png"),
+            selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png")
         }
     },
     ["background"] = love.graphics.newImage("assets/background.png"),
