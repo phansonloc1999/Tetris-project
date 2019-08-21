@@ -22,6 +22,9 @@ function love.load()
         end,
         ["play"] = function()
             return PlayState()
+        end,
+        ["pause"] = function()
+            return PauseState()
         end
     }
     gStateMachine:change("title-screen")
@@ -44,7 +47,9 @@ function love.update(dt)
     require("lib/lovebird").update()
 
     if (not gGamePaused) then
-        Timer.update(dt)
+        if (gStateMachine.current._name ~= "Pause State") then
+            Timer.update(dt)
+        end
 
         gStateMachine:update(dt)
     end

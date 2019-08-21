@@ -17,6 +17,7 @@ require("src/GameStates/MenuState")
 require("src/GameStates/SelectModeState")
 require("src/GameStates/SelectAnimalState")
 require("src/GameStates/PlayState")
+require("src/GameStates/PauseState")
 require("src/StateMachine")
 
 require("src/Scripts/Block")

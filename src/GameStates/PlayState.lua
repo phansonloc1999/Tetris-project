@@ -1,7 +1,7 @@
 ---@class PlayState
 PlayState = Class {__includes = BaseState}
 
-local PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT = 800, 500
+PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT = 800, 500
 
 function PlayState:init()
 end
@@ -17,6 +17,10 @@ function PlayState:update(dt)
     self._player1:update(dt)
     if (self._numOfPlayers == 2) then
         self._player2:update(dt)
+    end
+
+    if (love.keyboard.wasPressed("escape")) then
+        gStateMachine:change("pause", {pausedPlayState = self})
     end
 end
 

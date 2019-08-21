@@ -236,6 +236,7 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                 function(go, blockDefinitions, blocksPosToClear, player)
                     Timer.tween(2, blockDefinitions):finish(
                         function()
+                            print("Clearing")
                             if (#player._clearedRows > 0) then
                                 local row, column
                                 for i = 1, #blocksPosToClear do

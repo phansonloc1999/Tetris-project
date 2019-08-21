@@ -65,6 +65,10 @@ gTextures = {
         ok = {
             deselected = love.graphics.newImage("assets/buttons/ok deselected.png"),
             selected = love.graphics.newImage("assets/buttons/ok selected.png")
+        },
+        reset = {
+            deselected = love.graphics.newImage("assets/buttons/reset deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/reset selected.png")
         }
     },
     titles = {
@@ -103,7 +107,8 @@ gTextures = {
         }
     },
     ["background"] = love.graphics.newImage("assets/background.png"),
-    ["title-screen"] = love.graphics.newImage("assets/title screen.png")
+    ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
+    ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png")
 }
 
 TITLE_TOP_SPACING = 20
