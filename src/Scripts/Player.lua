@@ -7,6 +7,8 @@ CLEARED_BLOCK_SCORE = 10
 BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN = (PLAYZONE_HEIGHT + 120) / BLOCK_HEIGHT, PLAYZONE_WIDTH / BLOCK_WIDTH
 BLOCK_SCORE = 10
 
+local BLOCK_FLASHING_FRAME_DURATION = 0.3
+
 function Player:init(playzoneX, playzoneY)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
@@ -29,6 +31,8 @@ function Player:init(playzoneX, playzoneY)
 
     self._score = 0
     self._isRemovingBlocks = false
+
+    self._scoreIncreaseEffects = {}
 end
 
 function Player:render()
@@ -56,6 +60,15 @@ function Player:render()
         self._PREVIEW_FRAME_X,
         self._PREVIEW_FRAME_Y + PREVIEW_FRAME_HEIGHT + 50
     )
+
+    for i = 1, #self._scoreIncreaseEffects do
+        love.graphics.setColor(1, 1, 1, self._scoreIncreaseEffects[i].opacity)
+        love.graphics.print(
+            "+ " .. BLOCK_SCORE * BLOCK_MATRIX_COLUMN,
+            self._scoreIncreaseEffects[i].renderX,
+            self._scoreIncreaseEffects[i].renderY
+        )
+    end
 end
 
 function Player:update(dt)
@@ -213,8 +226,8 @@ end
 function Player:clearCompletedRows(rowsNewlyFilled)
     local clearedRows = {}
     local blocksPosToClear = {}
-    local blockDefinitions = {}
-    local targetOpacity = {_opacity = 0}
+    local clearBlockDefinitions, visibleBlockDefinitions = {}, {}
+    local clearOpacity, visibleOpacity = {_opacity = 0}, {_opacity = 1}
     for i = 1, #rowsNewlyFilled do
         local blocksCounter = 0
         for j = 1, BLOCK_MATRIX_COLUMN do
@@ -226,33 +239,78 @@ function Player:clearCompletedRows(rowsNewlyFilled)
             for j = 1, BLOCK_MATRIX_COLUMN do
                 local currentBlock = self._blocks[rowsNewlyFilled[i]][j] ---@type Block
                 table.insert(blocksPosToClear, {rowsNewlyFilled[i], j})
-                table.merge(blockDefinitions, {[currentBlock] = targetOpacity})
+                table.merge(clearBlockDefinitions, {[currentBlock] = clearOpacity})
+                table.merge(visibleBlockDefinitions, {[currentBlock] = visibleOpacity})
             end
 
             self._isRemovingBlocks = true
 
             --- Tween opacity of cleared blocks, clear blocks in matrix and above blocks fall update
             Chain(
-                function(go, blockDefinitions, blocksPosToClear, player)
-                    Timer.tween(2, blockDefinitions):finish(
+                function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    Timer.tween(BLOCK_FLASHING_FRAME_DURATION, clearBlockDefinitions):finish(
                         function()
-                            print("Clearing")
-                            if (#player._clearedRows > 0) then
-                                local row, column
-                                for i = 1, #blocksPosToClear do
-                                    row, column = blocksPosToClear[i][1], blocksPosToClear[i][2]
-                                    player._blocks[row][column] = nil
-                                end
-                                player:fallAfterClearance()
-                                player._isRemovingBlocks = false
-                            end
+                            go(visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                        end
+                    )
+                end,
+                function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    Timer.tween(BLOCK_FLASHING_FRAME_DURATION, visibleBlockDefinitions):finish(
+                        function()
+                            go(visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                        end
+                    )
+                end,
+                function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    Timer.tween(BLOCK_FLASHING_FRAME_DURATION, clearBlockDefinitions):finish(
+                        function()
+                            go(visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                        end
+                    )
+                end,
+                function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    if (#player._clearedRows > 0) then
+                        local row, column
+                        for i = 1, #blocksPosToClear do
+                            row, column = blocksPosToClear[i][1], blocksPosToClear[i][2]
+                            player._blocks[row][column] = nil
+                        end
+                        player:fallAfterClearance()
+                        player._isRemovingBlocks = false
+                    end
+                end
+            )(nil, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, self)
+
+            table.insert(clearedRows, rowsNewlyFilled[i])
+
+            Timer.after(
+                BLOCK_FLASHING_FRAME_DURATION * 3 - 0.1,
+                function()
+                    table.insert(
+                        self._scoreIncreaseEffects,
+                        1,
+                        {
+                            renderX = self._blocks[rowsNewlyFilled[i]][1]._pos._x + math.random(20, 10),
+                            renderY = self._blocks[rowsNewlyFilled[i]][1]._pos._y,
+                            opacity = 1
+                        }
+                    )
+                    Timer.tween(
+                        2,
+                        {
+                            [self._scoreIncreaseEffects[1]] = {
+                                renderY = self._scoreIncreaseEffects[1].renderY - 100,
+                                opacity = 0
+                            }
+                        }
+                    ):finish(
+                        function()
+                            self._score = self._score + BLOCK_SCORE * BLOCK_MATRIX_COLUMN
+                            table.remove(self._scoreIncreaseEffects, #self._scoreIncreaseEffects)
                         end
                     )
                 end
-            )(nil, blockDefinitions, blocksPosToClear, self)
-
-            table.insert(clearedRows, rowsNewlyFilled[i])
-            self._score = self._score + BLOCK_SCORE * BLOCK_MATRIX_COLUMN
+            )
         end
     end
     return clearedRows
