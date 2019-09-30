@@ -111,4 +111,10 @@ gTextures = {
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png")
 }
 
+gSounds = {
+    hover = love.audio.newSource("sounds/hover.ogg", "static"),
+    scoring = love.audio.newSource("sounds/scoring 1.wav", "static")
+}
+
 TITLE_TOP_SPACING = 20
+CAPPED_FPS = 60

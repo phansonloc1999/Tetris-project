@@ -49,6 +49,10 @@ function love.draw()
 end
 
 function love.update(dt)
+    if dt < 1 / (CAPPED_FPS / 2) then
+        love.timer.sleep(1 / (CAPPED_FPS / 2) - dt)
+    end
+
     require("lib/lovebird").update()
 
     if (not gGamePaused) then
