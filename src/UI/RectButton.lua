@@ -64,6 +64,8 @@ end
 
 function RectButton:onSelect()
     if (not self._selected) then
+        love.audio.play(gSounds.hover)
+
         self._currentTexture = "selected"
 
         self._hitbox._pos:setPos(

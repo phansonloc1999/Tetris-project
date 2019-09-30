@@ -295,6 +295,9 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                             opacity = 1
                         }
                     )
+
+                    love.audio.play(gSounds.scoring)
+
                     Timer.tween(
                         2,
                         {
