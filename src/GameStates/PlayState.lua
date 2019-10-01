@@ -7,6 +7,8 @@ function PlayState:init()
 end
 
 function PlayState:render()
+    love.graphics.draw(gTextures["background-large"])
+
     self._player1:render()
     if (self._numOfPlayers == 2) then
         self._player2:render()

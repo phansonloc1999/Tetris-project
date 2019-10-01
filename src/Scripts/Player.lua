@@ -66,11 +66,13 @@ function Player:render()
     )
 
     for i = 1, #self._scoreIncreaseEffects do
-        love.graphics.setColor(1, 1, 1, self._scoreIncreaseEffects[i].opacity)
-        love.graphics.print(
+        love.graphics.setColor(0, 1, 0, self._scoreIncreaseEffects[i].opacity)
+        love.graphics.printf(
             "+ " .. BLOCK_SCORE * BLOCK_MATRIX_COLUMN,
+            love.graphics.newFont(18),
             self._scoreIncreaseEffects[i].renderX,
-            self._scoreIncreaseEffects[i].renderY
+            self._scoreIncreaseEffects[i].renderY,
+            100
         )
     end
 end
