@@ -1,18 +1,18 @@
 ---@class Block
 Block = Class {}
 
-BLOCK_WIDTH, BLOCK_HEIGHT = 30, 30
+BLOCK_WIDTH, BLOCK_HEIGHT = 38, 38
 
-function Block:init(x, y, parentTetromino)
+function Block:init(x, y, parentTetromino, texture)
     self._pos = Vector2(x, y)
     self._parentTetromino = parentTetromino ---@type Tetromino
     self._opacity = 1
+    self._texture = texture
 end
 
 function Block:render()
-    love.graphics.setColor(1, 0, 0, self._opacity)
-    love.graphics.rectangle("fill", self._pos._x, self._pos._y, BLOCK_WIDTH, BLOCK_HEIGHT)
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(1, 1, 1, self._opacity)
+    love.graphics.draw(self._texture, self._pos._x, self._pos._y)
 end
 
 function Block:fall()
@@ -38,7 +38,7 @@ function Block:getPosInMatrix(PLAYZONE_X, PLAYZONE_Y)
 end
 
 function Block:getRowInMatrix(PLAYZONE_Y)
-    return (self._pos._y - (PLAYZONE_Y - 120)) / BLOCK_HEIGHT + 1
+    return (self._pos._y - (PLAYZONE_Y - (BLOCK_HEIGHT) * 4)) / BLOCK_HEIGHT + 1
 end
 
 function Block:isObstructedBy(other)

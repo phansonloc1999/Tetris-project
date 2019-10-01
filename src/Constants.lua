@@ -106,6 +106,27 @@ gTextures = {
             selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png")
         }
     },
+    blocks = {
+        cat = {
+            L1 = love.graphics.newImage("assets/blocks/cat/L.png"),
+            L2 = love.graphics.newImage("assets/blocks/cat/L.png"),
+            I = love.graphics.newImage("assets/blocks/cat/I.png"),
+            O = love.graphics.newImage("assets/blocks/cat/O.png"),
+            T = love.graphics.newImage("assets/blocks/cat/T.png"),
+            Z1 = love.graphics.newImage("assets/blocks/cat/Z.png"),
+            Z2 = love.graphics.newImage("assets/blocks/cat/Z.png")
+        },
+        dog = {
+            L1 = love.graphics.newImage("assets/blocks/dog/L.png"),
+            L2 = love.graphics.newImage("assets/blocks/dog/L.png"),
+            I = love.graphics.newImage("assets/blocks/dog/I.png"),
+            O = love.graphics.newImage("assets/blocks/dog/O.png"),
+            T = love.graphics.newImage("assets/blocks/dog/T.png"),
+            Z = love.graphics.newImage("assets/blocks/dog/Z.png"),
+            Z1 = love.graphics.newImage("assets/blocks/dog/Z.png"),
+            Z2 = love.graphics.newImage("assets/blocks/dog/Z.png")
+        }
+    },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png")

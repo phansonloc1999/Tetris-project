@@ -5,7 +5,7 @@ TETROMINO_FALL_DISTANCE = BLOCK_HEIGHT
 TETROMINO_FALL_TIMER = 1
 TETROMINO_ACCELARATE_SPEED = 4
 
-function Tetromino:init(x, y, type)
+function Tetromino:init(x, y, type, animal)
     self._pos = Vector2(x, y)
     self._isStopped = false
 
@@ -16,24 +16,18 @@ function Tetromino:init(x, y, type)
 
     self._isDissolved = false
     self._accelerateTimer = TETROMINO_FALL_TIMER
+
+    self._animal = animal
 end
 
 function Tetromino:render()
-    love.graphics.setColor(0, 1, 0)
     for row = 1, #self._def do
         for column = 1, #self._def[1] do
-            if (self._def[row][column] == 1) then
-                love.graphics.rectangle(
-                    "fill",
-                    self._pos._x + (column - 1) * BLOCK_WIDTH,
-                    self._pos._y + (row - 1) * BLOCK_HEIGHT,
-                    BLOCK_HEIGHT,
-                    BLOCK_HEIGHT
-                )
+            if (self._blocks[row][column]) then
+                self._blocks[row][column]:render()
             end
         end
     end
-    love.graphics.setColor(1, 1, 1)
 end
 
 function Tetromino:isStopped()
@@ -91,7 +85,7 @@ function Tetromino:moveLeft()
     for i = 1, #self._def do
         for j = 1, #self._def[i] do
             if (self._blocks[i][j]) then
-                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x - BLOCK_WIDTH 
+                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x - BLOCK_WIDTH
             end
         end
     end
@@ -103,7 +97,7 @@ function Tetromino:moveRight()
     for i = 1, #self._def do
         for j = 1, #self._def[i] do
             if (self._blocks[i][j]) then
-                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x + BLOCK_WIDTH 
+                self._blocks[i][j]._pos._x = self._blocks[i][j]._pos._x + BLOCK_WIDTH
             end
         end
     end
@@ -145,7 +139,12 @@ function Tetromino:getIndividualBlocks()
         for column = 1, #currentDef[1] do
             if (currentDef[row][column] == 1) then
                 self._blocks[row][column] =
-                    Block(self._pos._x + (column - 1) * BLOCK_WIDTH, self._pos._y + (row - 1) * BLOCK_HEIGHT, self)
+                    Block(
+                    self._pos._x + (column - 1) * BLOCK_WIDTH,
+                    self._pos._y + (row - 1) * BLOCK_HEIGHT,
+                    self,
+                    (gTextures.blocks[self._animal])[self._type]
+                )
             end
         end
     end
@@ -161,7 +160,7 @@ function Tetromino:getHeight()
 end
 
 function Tetromino:toSpawn(PLAYZONE_X, PLAYZONE_Y)
-    self._pos._x, self._pos._y = PLAYZONE_X + 30, PLAYZONE_Y - 120
+    self._pos._x, self._pos._y = PLAYZONE_X + BLOCK_WIDTH, PLAYZONE_Y - (BLOCK_HEIGHT * 4)
 end
 
 function Tetromino:toPreview(PREVIEW_FRAME_X, PREVIEW_FRAME_Y)

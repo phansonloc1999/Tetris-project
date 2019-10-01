@@ -1,10 +1,12 @@
 ---@class Player
 Player = Class {}
 
-PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 210, 390
-PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 120, 120
+PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 266, 494
+PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 152, 152
 CLEARED_BLOCK_SCORE = 10
-BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN = (PLAYZONE_HEIGHT + 120) / BLOCK_HEIGHT, PLAYZONE_WIDTH / BLOCK_WIDTH
+BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN =
+    (PLAYZONE_HEIGHT + (BLOCK_HEIGHT) * 4) / BLOCK_HEIGHT,
+    PLAYZONE_WIDTH / BLOCK_WIDTH
 BLOCK_SCORE = 10
 
 local BLOCK_FLASHING_FRAME_DURATION = 0.3
@@ -28,6 +30,7 @@ function Player:init(playzoneX, playzoneY)
     self:updateActiveBlocksInMatrix()
     self._nextTetromino = self:getNewTetromino()
     self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+    self._nextTetromino:getIndividualBlocks()
 
     self._score = 0
     self._isRemovingBlocks = false
@@ -43,6 +46,7 @@ function Player:render()
             end
         end
     end
+    love.graphics.setColor(1, 1, 1)
 
     love.graphics.rectangle("line", self._PLAYZONE_X, self._PLAYZONE_Y, PLAYZONE_WIDTH, PLAYZONE_HEIGHT)
 
@@ -82,6 +86,7 @@ function Player:update(dt)
             self:updateActiveBlocksInMatrix()
             self._nextTetromino = self:getNewTetromino()
             self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+            self._nextTetromino:getIndividualBlocks()
         end
     end
 
@@ -174,7 +179,7 @@ function Player:getNewTetromino()
         table.insert(shapes, shape)
     end
     local index = math.random(1, #shapes)
-    return Tetromino(0, 0, shapes[index])
+    return Tetromino(0, 0, shapes[index], "cat")
 end
 
 function Player:activeTetroFallUpdate()

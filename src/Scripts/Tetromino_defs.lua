@@ -20,7 +20,8 @@ TETROMINO_DEFS = {
             {0, 1, 0},
             {1, 1, 0}
         },
-        widthInPreview = 90, heightInPreview = 60,
+        widthInPreview = BLOCK_WIDTH * 3,
+        heightInPreview = BLOCK_HEIGHT * 2
     },
     L2 = {
         {
@@ -43,7 +44,8 @@ TETROMINO_DEFS = {
             {0, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = 90, heightInPreview = 60
+        widthInPreview = BLOCK_WIDTH * 3,
+        heightInPreview = BLOCK_HEIGHT * 2
     },
     I = {
         {
@@ -70,7 +72,8 @@ TETROMINO_DEFS = {
             {0, 1, 0, 0},
             {0, 1, 0, 0}
         },
-        widthInPreview = 120, heightInPreview = 90
+        widthInPreview = BLOCK_WIDTH * 4,
+        heightInPreview = BLOCK_HEIGHT * 3
     },
     O = {
         {
@@ -78,7 +81,8 @@ TETROMINO_DEFS = {
             {0, 1, 1, 0},
             {0, 0, 0, 0}
         },
-        widthInPreview = 120, heightInPreview = 60
+        widthInPreview = BLOCK_WIDTH * 4,
+        heightInPreview = BLOCK_HEIGHT * 2
     },
     Z1 = {
         {
@@ -101,7 +105,8 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = 90, heightInPreview = 60
+        widthInPreview = BLOCK_WIDTH * 3,
+        heightInPreview = BLOCK_HEIGHT * 2
     },
     Z2 = {
         {
@@ -124,7 +129,8 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {1, 0, 0}
         },
-        widthInPreview = 90, heightInPreview = 60
+        widthInPreview = BLOCK_WIDTH * 3,
+        heightInPreview = BLOCK_HEIGHT * 2
     },
     T = {
         {
@@ -147,6 +153,7 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = 90, heightInPreview = 60
+        widthInPreview = BLOCK_WIDTH * 3,
+        heightInPreview = BLOCK_HEIGHT * 2
     }
 }
