@@ -143,7 +143,8 @@ function Tetromino:getIndividualBlocks()
                     self._pos._x + (column - 1) * BLOCK_WIDTH,
                     self._pos._y + (row - 1) * BLOCK_HEIGHT,
                     self,
-                    (gTextures.blocks[self._animal])[self._type]
+                    (gTextures.blocks[self._animal])[self._type],
+                    (self._currentRotation - 1) * 90
                 )
             end
         end

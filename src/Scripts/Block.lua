@@ -3,16 +3,46 @@ Block = Class {}
 
 BLOCK_WIDTH, BLOCK_HEIGHT = 38, 38
 
-function Block:init(x, y, parentTetromino, texture)
+function Block:init(x, y, parentTetromino, texture, rotation)
     self._pos = Vector2(x, y)
     self._parentTetromino = parentTetromino ---@type Tetromino
     self._opacity = 1
     self._texture = texture
+    self._rotation = rotation or 0
 end
 
 function Block:render()
     love.graphics.setColor(1, 1, 1, self._opacity)
-    love.graphics.draw(self._texture, self._pos._x, self._pos._y)
+
+    if (self._rotation == 0) then
+        love.graphics.draw(self._texture, self._pos._x, self._pos._y)
+    end
+
+    if (self._rotation == 90) then
+        love.graphics.draw(
+            self._texture,
+            self._pos._x + self._texture:getWidth(),
+            self._pos._y + self._texture:getHeight(),
+            math.rad(self._rotation),
+            -1,
+            1
+        )
+    end
+
+    if (self._rotation == 180) then
+        love.graphics.draw(
+            self._texture,
+            self._pos._x,
+            self._pos._y + self._texture:getHeight(),
+            math.rad(self._rotation),
+            -1,
+            1
+        )
+    end
+
+    if (self._rotation == 270) then
+        love.graphics.draw(self._texture, self._pos._x, self._pos._y, math.rad(self._rotation), -1, 1)
+    end
 end
 
 function Block:fall()
