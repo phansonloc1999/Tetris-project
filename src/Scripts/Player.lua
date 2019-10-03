@@ -1,7 +1,7 @@
 ---@class Player
 Player = Class {}
 
-PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 266, 494
+PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 266, 456
 PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 152, 152
 CLEARED_BLOCK_SCORE = 10
 BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN =
@@ -36,9 +36,23 @@ function Player:init(playzoneX, playzoneY)
     self._isRemovingBlocks = false
 
     self._scoreIncreaseEffects = {}
+
+    self._stencilFunc = function()
+        love.graphics.rectangle(
+            "fill",
+            self._PLAYZONE_X,
+            self._PLAYZONE_Y - BLOCK_HEIGHT * 4,
+            PLAYZONE_WIDTH,
+            BLOCK_HEIGHT * 4
+        )
+    end
 end
 
 function Player:render()
+    love.graphics.draw(gTextures["screenplay-border"], self._PLAYZONE_X - 4, self._PLAYZONE_Y - 4)
+
+    love.graphics.stencil(self._stencilFunc, "replace", 1)
+    love.graphics.setStencilTest("less", 1)
     for row = 1, BLOCK_MATRIX_ROW do
         for column = 1, BLOCK_MATRIX_COLUMN do
             if (self._blocks[row][column]) then
@@ -47,8 +61,7 @@ function Player:render()
         end
     end
     love.graphics.setColor(1, 1, 1)
-
-    love.graphics.rectangle("line", self._PLAYZONE_X, self._PLAYZONE_Y, PLAYZONE_WIDTH, PLAYZONE_HEIGHT)
+    love.graphics.setStencilTest()
 
     love.graphics.rectangle(
         "line",
