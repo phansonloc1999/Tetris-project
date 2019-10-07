@@ -11,7 +11,7 @@ BLOCK_SCORE = 10
 
 local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
-function Player:init(playzoneX, playzoneY)
+function Player:init(playzoneX, playzoneY, keyConfigs)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
     self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = self._PLAYZONE_X + PLAYZONE_WIDTH + 50, self._PLAYZONE_Y
@@ -46,6 +46,8 @@ function Player:init(playzoneX, playzoneY)
             BLOCK_HEIGHT * 4
         )
     end
+
+    self._keyConfigs = keyConfigs
 end
 
 function Player:render()
@@ -63,13 +65,7 @@ function Player:render()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setStencilTest()
 
-    love.graphics.rectangle(
-        "line",
-        self._PREVIEW_FRAME_X,
-        self._PREVIEW_FRAME_Y,
-        PREVIEW_FRAME_WIDTH,
-        PREVIEW_FRAME_HEIGHT
-    )
+    love.graphics.draw(gTextures["preview-border"], self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
     self._nextTetromino:render()
 
     love.graphics.print(
@@ -124,7 +120,7 @@ function Player:update(dt)
 end
 
 function Player:tetrominoMovementUpdate(dt)
-    if (love.keyboard.wasPressed("space")) then
+    if (love.keyboard.wasPressed(self._keyConfigs.rotate)) then
         self:removeActiveBlocksInMatrix()
         self._activeTetromino:rotateNext()
         self._activeTetromino:getIndividualBlocks()
@@ -136,7 +132,7 @@ function Player:tetrominoMovementUpdate(dt)
         self:updateActiveBlocksInMatrix()
         self:checkActiveForObstruction()
     end
-    if (love.keyboard.wasPressed("left")) then
+    if (love.keyboard.wasPressed(self._keyConfigs.left)) then
         self:removeActiveBlocksInMatrix()
         self._activeTetromino:moveLeft()
         self._activeTetromino:getIndividualBlocks()
@@ -147,7 +143,7 @@ function Player:tetrominoMovementUpdate(dt)
         end
         self:updateActiveBlocksInMatrix()
         self:checkActiveForObstruction()
-    elseif (love.keyboard.wasPressed("right")) then
+    elseif (love.keyboard.wasPressed(self._keyConfigs.right)) then
         self:removeActiveBlocksInMatrix()
         self._activeTetromino:moveRight()
         self._activeTetromino:getIndividualBlocks()
@@ -160,7 +156,7 @@ function Player:tetrominoMovementUpdate(dt)
         self:checkActiveForObstruction()
     end
 
-    if (love.keyboard.isDown("down")) then
+    if (love.keyboard.isDown(self._keyConfigs.accelerate)) then
         self._activeTetromino:accelerate(dt)
     end
 end
