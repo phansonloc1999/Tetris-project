@@ -131,7 +131,8 @@ gTextures = {
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png"),
     ["background-large"] = love.graphics.newImage("assets/background large.png"),
-    ["screenplay-border"] = love.graphics.newImage("assets/screenplay border.png")
+    ["screenplay-border"] = love.graphics.newImage("assets/screenplay border.png"),
+    ["preview-border"] = love.graphics.newImage("assets/preview board.png")
 }
 
 gSounds = {

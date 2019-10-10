@@ -11,6 +11,8 @@ BLOCK_SCORE = 10
 
 local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
+local GENERATED_TETROMINOES_HISTORY = {}
+
 function Player:init(playzoneX, playzoneY, keyConfigs)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
@@ -24,6 +26,7 @@ function Player:init(playzoneX, playzoneY, keyConfigs)
         end
     end
 
+    self._curTetrominoHistoryIndex = 0
     self._activeTetromino = self:getNewTetromino() ---@type Tetromino
     self._activeTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
     self._activeTetromino:getIndividualBlocks()
@@ -185,12 +188,16 @@ function Player:verifyMovement()
 end
 
 function Player:getNewTetromino()
-    local shapes = {}
-    for shape, def in pairs(TETROMINO_DEFS) do
-        table.insert(shapes, shape)
+    if (self._curTetrominoHistoryIndex + 1 > #GENERATED_TETROMINOES_HISTORY) then
+        local shapes = {}
+        for shape, def in pairs(TETROMINO_DEFS) do
+            table.insert(shapes, shape)
+        end
+        local index = math.random(1, #shapes)
+        table.insert(GENERATED_TETROMINOES_HISTORY, shapes[index])
     end
-    local index = math.random(1, #shapes)
-    return Tetromino(0, 0, shapes[index], "cat")
+    self._curTetrominoHistoryIndex = self._curTetrominoHistoryIndex + 1
+    return Tetromino(0, 0, GENERATED_TETROMINOES_HISTORY[self._curTetrominoHistoryIndex], "cat")
 end
 
 function Player:activeTetroFallUpdate()
