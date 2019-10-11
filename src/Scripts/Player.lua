@@ -2,21 +2,23 @@
 Player = Class {}
 
 PLAYZONE_WIDTH, PLAYZONE_HEIGHT = 266, 456
-PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 152, 152
+PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 130, 111
 CLEARED_BLOCK_SCORE = 10
 BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN =
     (PLAYZONE_HEIGHT + (BLOCK_HEIGHT) * 4) / BLOCK_HEIGHT,
     PLAYZONE_WIDTH / BLOCK_WIDTH
 BLOCK_SCORE = 10
+PLAYZONE_TO_PREVIEW_SPACING = 50
 
 local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
-local GENERATED_TETROMINOES_HISTORY = {}
+GENERATED_TETROMINOES_HISTORY = {}
 
-function Player:init(playzoneX, playzoneY, keyConfigs)
+function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, previewXOffset, keyConfigs)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
-    self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = self._PLAYZONE_X + PLAYZONE_WIDTH + 50, self._PLAYZONE_Y
+    self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = previewX, previewY
+    self._PREVIEW_X_OFFSET = previewXOffset
 
     self._blocks = {} ---@type Block[][]
     for row = 1, BLOCK_MATRIX_ROW do
@@ -32,7 +34,7 @@ function Player:init(playzoneX, playzoneY, keyConfigs)
     self._activeTetromino:getIndividualBlocks()
     self:updateActiveBlocksInMatrix()
     self._nextTetromino = self:getNewTetromino()
-    self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+    self._nextTetromino:toPreview(self._PREVIEW_FRAME_X + self._PREVIEW_X_OFFSET, self._PREVIEW_FRAME_Y)
     self._nextTetromino:getIndividualBlocks()
 
     self._score = 0
@@ -51,6 +53,7 @@ function Player:init(playzoneX, playzoneY, keyConfigs)
     end
 
     self._keyConfigs = keyConfigs
+    self._previewTexture = previewTexture
 end
 
 function Player:render()
@@ -68,7 +71,9 @@ function Player:render()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setStencilTest()
 
-    love.graphics.draw(gTextures["preview-border"], self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+    if (self._previewTexture) then
+        love.graphics.draw(self._previewTexture, self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+    end
     self._nextTetromino:render()
 
     love.graphics.print(
@@ -99,7 +104,7 @@ function Player:update(dt)
             self._activeTetromino:getIndividualBlocks()
             self:updateActiveBlocksInMatrix()
             self._nextTetromino = self:getNewTetromino()
-            self._nextTetromino:toPreview(self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y)
+            self._nextTetromino:toPreview(self._PREVIEW_FRAME_X + self._PREVIEW_X_OFFSET, self._PREVIEW_FRAME_Y)
             self._nextTetromino:getIndividualBlocks()
         end
     end

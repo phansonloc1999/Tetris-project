@@ -20,8 +20,8 @@ TETROMINO_DEFS = {
             {0, 1, 0},
             {1, 1, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 3,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 3,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     },
     L2 = {
         {
@@ -44,8 +44,8 @@ TETROMINO_DEFS = {
             {0, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 3,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 3,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     },
     I = {
         {
@@ -72,8 +72,8 @@ TETROMINO_DEFS = {
             {0, 1, 0, 0},
             {0, 1, 0, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 4,
-        heightInPreview = BLOCK_HEIGHT * 3
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 4,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 3
     },
     O = {
         {
@@ -81,8 +81,8 @@ TETROMINO_DEFS = {
             {0, 1, 1, 0},
             {0, 0, 0, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 4,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 4,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     },
     Z1 = {
         {
@@ -105,8 +105,8 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 3,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 3,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     },
     Z2 = {
         {
@@ -129,8 +129,8 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {1, 0, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 3,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 3,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     },
     T = {
         {
@@ -153,7 +153,7 @@ TETROMINO_DEFS = {
             {1, 1, 0},
             {0, 1, 0}
         },
-        widthInPreview = BLOCK_WIDTH * 3,
-        heightInPreview = BLOCK_HEIGHT * 2
+        widthInPreview = PREVIEW_BLOCK_WIDTH * 3,
+        heightInPreview = PREVIEW_BLOCK_HEIGHT * 2
     }
 }

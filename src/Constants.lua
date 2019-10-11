@@ -127,12 +127,20 @@ gTextures = {
             Z2 = love.graphics.newImage("assets/blocks/dog/Z.png")
         }
     },
+    preview_blocks = {
+        L = love.graphics.newImage("assets/preview blocks/L.png"),
+        I = love.graphics.newImage("assets/preview blocks/I.png"),
+        O = love.graphics.newImage("assets/preview blocks/O.png"),
+        T = love.graphics.newImage("assets/preview blocks/T.png"),
+        Z = love.graphics.newImage("assets/preview blocks/O.png")
+    },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png"),
     ["background-large"] = love.graphics.newImage("assets/background large.png"),
     ["screenplay-border"] = love.graphics.newImage("assets/screenplay border.png"),
-    ["preview-border"] = love.graphics.newImage("assets/preview board.png")
+    ["preview-board"] = love.graphics.newImage("assets/preview board.png"),
+    ["preview-board-2-players"] = love.graphics.newImage("assets/preview board 2 players.png")
 }
 
 gSounds = {

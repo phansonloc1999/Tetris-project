@@ -2,6 +2,7 @@
 Block = Class {}
 
 BLOCK_WIDTH, BLOCK_HEIGHT = 38, 38
+PREVIEW_BLOCK_WIDTH, PREVIEW_BLOCK_HEIGHT = 15, 15
 
 function Block:init(x, y, parentTetromino, texture, rotation)
     self._pos = Vector2(x, y)

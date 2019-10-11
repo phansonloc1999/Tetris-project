@@ -18,6 +18,7 @@ function Tetromino:init(x, y, type, animal)
     self._accelerateTimer = TETROMINO_FALL_TIMER
 
     self._animal = animal
+    self._isPreview = false
 end
 
 function Tetromino:render()
@@ -135,15 +136,24 @@ function Tetromino:getIndividualBlocks()
         end
     end
 
+    local blockTexture
+    local blockWidth, blockHeight
+    if (self._isPreview) then
+        blockTexture = gTextures.preview_blocks[string.sub(self._type, 1, 1)]
+        blockWidth, blockHeight = PREVIEW_BLOCK_WIDTH, PREVIEW_BLOCK_HEIGHT
+    else
+        blockTexture = (gTextures.blocks[self._animal])[self._type]
+        blockWidth, blockHeight = BLOCK_WIDTH, BLOCK_HEIGHT
+    end
     for row = 1, #currentDef do
         for column = 1, #currentDef[1] do
             if (currentDef[row][column] == 1) then
                 self._blocks[row][column] =
                     Block(
-                    self._pos._x + (column - 1) * BLOCK_WIDTH,
-                    self._pos._y + (row - 1) * BLOCK_HEIGHT,
+                    self._pos._x + (column - 1) * blockWidth,
+                    self._pos._y + (row - 1) * blockHeight,
                     self,
-                    (gTextures.blocks[self._animal])[self._type],
+                    blockTexture,
                     (self._currentRotation - 1) * 90
                 )
             end
@@ -162,10 +172,12 @@ end
 
 function Tetromino:toSpawn(PLAYZONE_X, PLAYZONE_Y)
     self._pos._x, self._pos._y = PLAYZONE_X + BLOCK_WIDTH, PLAYZONE_Y - (BLOCK_HEIGHT * 4)
+    self._isPreview = false
 end
 
-function Tetromino:toPreview(PREVIEW_FRAME_X, PREVIEW_FRAME_Y)
+function Tetromino:toPreview(PREVIEW_X, PREVIEW_Y)
     self._pos._x, self._pos._y =
-        PREVIEW_FRAME_X + PREVIEW_FRAME_WIDTH / 2 - TETROMINO_DEFS[self._type].widthInPreview / 2,
-        PREVIEW_FRAME_Y + PREVIEW_FRAME_HEIGHT / 2 - TETROMINO_DEFS[self._type].heightInPreview / 2
+        PREVIEW_X + PREVIEW_FRAME_WIDTH / 4 - TETROMINO_DEFS[self._type].widthInPreview / 2,
+        PREVIEW_Y + PREVIEW_FRAME_HEIGHT / 2 - TETROMINO_DEFS[self._type].heightInPreview / 2
+    self._isPreview = true
 end

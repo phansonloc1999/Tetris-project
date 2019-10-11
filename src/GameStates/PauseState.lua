@@ -40,7 +40,9 @@ function PauseState:enter(params)
         WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT / 2 - (SPACING_BETWEEN_BUTTONS * 3 + gTextures.buttons.back.deselected:getHeight() * 4) / 2 + 50,
         function(pauseState)
-            love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+            if (pauseState._pausedPlayState._numOfPlayers == 2) then
+                love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+            end
             gStateMachine.current = pauseState._pausedPlayState
         end,
         gTextures.buttons.back,
