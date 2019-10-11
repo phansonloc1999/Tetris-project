@@ -230,7 +230,10 @@ function SelectAnimalState:enter(params)
             self._buttons.back:getX(),
             self._buttons.back:getY() - 10 - gTextures.buttons.ok.deselected:getHeight(),
             function()
-                gStateMachine:change("play", {numOfPlayers = 2})
+                gStateMachine:change(
+                    "play",
+                    {numOfPlayers = 2, player1Animal = self._player1Animal, player2Animal = self._player2Animal}
+                )
             end,
             gTextures.buttons.ok,
             "deselected"

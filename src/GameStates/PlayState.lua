@@ -14,6 +14,8 @@ function PlayState:render()
     if (self._numOfPlayers == 2) then
         self._player2:render()
     end
+    love.graphics.setColor(1, 1, 1)
+
     self._player1:render()
     if (self._numOfPlayers == 2) then
         self._player2._nextTetromino:render()
@@ -43,7 +45,8 @@ function PlayState:enter(params)
             30,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"}
+            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            params.animal
         )
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
@@ -57,7 +60,8 @@ function PlayState:enter(params)
             100,
             gTextures["preview-board-2-players"],
             0,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"}
+            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            params.player1Animal
         )
         self._player2 =
             Player(
@@ -67,7 +71,8 @@ function PlayState:enter(params)
             100,
             nil,
             PREVIEW_FRAME_WIDTH / 2,
-            {rotate = "up", left = "left", right = "right", accelerate = "down"}
+            {rotate = "up", left = "left", right = "right", accelerate = "down"},
+            params.player2Animal
         )
     end
 end

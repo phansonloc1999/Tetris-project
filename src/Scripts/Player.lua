@@ -14,7 +14,7 @@ local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
 GENERATED_TETROMINOES_HISTORY = {}
 
-function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, previewXOffset, keyConfigs)
+function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, previewXOffset, keyConfigs, animal)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
     self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = previewX, previewY
@@ -27,6 +27,8 @@ function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, p
             self._blocks[row][column] = nil
         end
     end
+
+    self._animal = animal
 
     self._curTetrominoHistoryIndex = 0
     self._activeTetromino = self:getNewTetromino() ---@type Tetromino
@@ -202,7 +204,7 @@ function Player:getNewTetromino()
         table.insert(GENERATED_TETROMINOES_HISTORY, shapes[index])
     end
     self._curTetrominoHistoryIndex = self._curTetrominoHistoryIndex + 1
-    return Tetromino(0, 0, GENERATED_TETROMINOES_HISTORY[self._curTetrominoHistoryIndex], "cat")
+    return Tetromino(0, 0, GENERATED_TETROMINOES_HISTORY[self._curTetrominoHistoryIndex], self._animal)
 end
 
 function Player:activeTetroFallUpdate()
