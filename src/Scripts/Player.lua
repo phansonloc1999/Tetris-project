@@ -14,7 +14,18 @@ local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
 GENERATED_TETROMINOES_HISTORY = {}
 
-function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, previewXOffset, keyConfigs, animal)
+function Player:init(
+    playzoneX,
+    playzoneY,
+    previewX,
+    previewY,
+    previewTexture,
+    previewXOffset,
+    keyConfigs,
+    animal,
+    scoreBoardXOffset,
+    scoreBoardYOffset,
+    scoreBoardTexture)
     --- Constants
     self._PLAYZONE_X, self._PLAYZONE_Y = playzoneX, playzoneY
     self._PREVIEW_FRAME_X, self._PREVIEW_FRAME_Y = previewX, previewY
@@ -39,7 +50,6 @@ function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, p
     self._nextTetromino:toPreview(self._PREVIEW_FRAME_X + self._PREVIEW_X_OFFSET, self._PREVIEW_FRAME_Y)
     self._nextTetromino:getIndividualBlocks()
 
-    self._score = 0
     self._isRemovingBlocks = false
 
     self._scoreIncreaseEffects = {}
@@ -56,6 +66,9 @@ function Player:init(playzoneX, playzoneY, previewX, previewY, previewTexture, p
 
     self._keyConfigs = keyConfigs
     self._previewTexture = previewTexture
+
+    self._scoreBoard =
+        ScoreBoard(self._PLAYZONE_X + scoreBoardXOffset, self._PLAYZONE_Y + scoreBoardYOffset, scoreBoardTexture)
 end
 
 function Player:render()
@@ -78,11 +91,7 @@ function Player:render()
     end
     self._nextTetromino:render()
 
-    love.graphics.print(
-        "Score: " .. self._score,
-        self._PREVIEW_FRAME_X,
-        self._PREVIEW_FRAME_Y + PREVIEW_FRAME_HEIGHT + 50
-    )
+    self._scoreBoard:render()
 
     for i = 1, #self._scoreIncreaseEffects do
         love.graphics.setColor(0, 1, 0, self._scoreIncreaseEffects[i].opacity)
@@ -316,6 +325,7 @@ function Player:clearCompletedRows(rowsNewlyFilled)
             Timer.after(
                 BLOCK_FLASHING_FRAME_DURATION * 3 - 0.1,
                 function()
+                    self._scoreBoard:increase(BLOCK_SCORE * BLOCK_MATRIX_COLUMN)
                     table.insert(
                         self._scoreIncreaseEffects,
                         1,
@@ -338,7 +348,6 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                         }
                     ):finish(
                         function()
-                            self._score = self._score + BLOCK_SCORE * BLOCK_MATRIX_COLUMN
                             table.remove(self._scoreIncreaseEffects, #self._scoreIncreaseEffects)
                         end
                     )

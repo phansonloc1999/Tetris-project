@@ -41,12 +41,15 @@ function PlayState:enter(params)
             Player(
             WINDOW_WIDTH - PLAYZONE_WIDTH - 20,
             30,
-            30,
-            30,
+            WINDOW_WIDTH - PLAYZONE_WIDTH - 70 - gTextures["preview-board"]:getWidth(),
+            120,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
             {rotate = "space", left = "a", right = "d", accelerate = "s"},
-            params.animal
+            params.animal,
+            -50 - gTextures.score_boards.one_player:getWidth(),
+            -10,
+            gTextures.score_boards.one_player
         )
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
@@ -57,22 +60,30 @@ function PlayState:enter(params)
             PLAYSTATE_WINDOW_WIDTH / 2 - PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING - PLAYZONE_WIDTH,
             PLAYER_1_PLAYZONE_X + 4,
             PLAYSTATE_WINDOW_WIDTH / 2 - PREVIEW_FRAME_WIDTH / 2,
-            100,
+            130,
             gTextures["preview-board-2-players"],
             0,
             {rotate = "space", left = "a", right = "d", accelerate = "s"},
-            params.player1Animal
+            params.player1Animal,
+            PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING + PLAYZONE_WIDTH -
+                gTextures.score_boards.p1:getWidth() +
+                15,
+            0,
+            gTextures.score_boards.p1
         )
         self._player2 =
             Player(
             PLAYSTATE_WINDOW_WIDTH / 2 + PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING,
             PLAYER_1_PLAYZONE_X + 4,
             PLAYSTATE_WINDOW_WIDTH / 2 - PREVIEW_FRAME_WIDTH / 2,
-            100,
+            130,
             nil,
             PREVIEW_FRAME_WIDTH / 2,
             {rotate = "up", left = "left", right = "right", accelerate = "down"},
-            params.player2Animal
+            params.player2Animal,
+            -PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING - 10,
+            0,
+            gTextures.score_boards.p2
         )
     end
 end

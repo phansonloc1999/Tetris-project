@@ -134,6 +134,11 @@ gTextures = {
         T = love.graphics.newImage("assets/preview blocks/T.png"),
         Z = love.graphics.newImage("assets/preview blocks/O.png")
     },
+    score_boards = {
+        one_player = love.graphics.newImage("assets/score boards/one player.png"),
+        p1 = love.graphics.newImage("assets/score boards/P1.png"),
+        p2 = love.graphics.newImage("assets/score boards/P2.png")
+    },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png"),
