@@ -6,6 +6,20 @@ PLAYER_1_PLAYZONE_X = 21
 
 function PlayState:init()
     GENERATED_TETROMINOES_HISTORY = {}
+
+    self._pauseButton =
+        RectButton(
+        60,
+        250,
+        function()
+            gStateMachine:change("pause", {pausedPlayState = self})
+        end,
+        {
+            deselected = gTextures.buttons.pause.deselected,
+            selected = gTextures.buttons.pause.selected
+        },
+        "deselected"
+    )
 end
 
 function PlayState:render()
@@ -20,6 +34,8 @@ function PlayState:render()
     if (self._numOfPlayers == 2) then
         self._player2._nextTetromino:render()
     end
+
+    self._pauseButton:render()
 end
 
 function PlayState:update(dt)
@@ -28,8 +44,14 @@ function PlayState:update(dt)
         self._player2:update(dt)
     end
 
-    if (love.keyboard.wasPressed("escape")) then
-        gStateMachine:change("pause", {pausedPlayState = self})
+    if (self._pauseButton:collidesWithMouse()) then
+        self._pauseButton:onSelect()
+
+        if (love.mouse.wasPressed(1)) then
+            self._pauseButton:onClick()
+        end
+    elseif (self._pauseButton._selected) then
+        self._pauseButton:onDeselect()
     end
 end
 
@@ -54,6 +76,11 @@ function PlayState:enter(params)
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
         PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 146, 91
+
+        self._pauseButton:setPos(
+            PLAYSTATE_WINDOW_WIDTH / 2 - self._pauseButton._textures[self._pauseButton._currentTexture]:getWidth() / 2,
+            250
+        )
 
         self._player1 =
             Player(

@@ -69,6 +69,10 @@ gTextures = {
         reset = {
             deselected = love.graphics.newImage("assets/buttons/reset deselected.png"),
             selected = love.graphics.newImage("assets/buttons/reset selected.png")
+        },
+        pause = {
+            deselected = love.graphics.newImage("assets/buttons/pause deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/pause selected.png")
         }
     },
     titles = {
