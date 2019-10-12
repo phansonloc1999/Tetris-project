@@ -30,7 +30,7 @@ end
 function PauseState:enter(params)
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-    self._pausedPlayState = params.pausedPlayState
+    self._pausedPlayState = params.pausedPlayState ---@type PlayState
 
     local SPACING_BETWEEN_BUTTONS = 17
 
@@ -54,7 +54,16 @@ function PauseState:enter(params)
         self._buttons.back:getX(),
         self._buttons.back:getY() + self._buttons.back:getHeight() + SPACING_BETWEEN_BUTTONS,
         function(pauseState)
-            gStateMachine:change("play", {numOfPlayers = pauseState._pausedPlayState._numOfPlayers})
+            gStateMachine:change(
+                "play",
+                {
+                    numOfPlayers = pauseState._pausedPlayState._numOfPlayers,
+                    animal = self._pausedPlayState._player1._animal,
+                    player1Animal = self._pausedPlayState._player1._animal,
+                    player2Animal = self._pausedPlayState._player2 ~= nil and self._pausedPlayState._player2._animal or
+                        "none"
+                }
+            )
         end,
         gTextures.buttons.reset,
         "deselected"
