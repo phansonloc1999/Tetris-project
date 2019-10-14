@@ -10,7 +10,7 @@ function PlayState:init()
     self._pauseButton =
         RectButton(
         60,
-        250,
+        300,
         function()
             gStateMachine:change("pause", {pausedPlayState = self})
         end,
@@ -36,6 +36,14 @@ function PlayState:render()
     end
 
     self._pauseButton:render()
+
+    love.graphics.draw(gTextures.time_board, self._timerBoard.x, self._timerBoard.y)
+    local timerText = love.graphics.newText(love.graphics.newFont(25), tostring(math.floor(self._timer)))
+    love.graphics.draw(
+        timerText,
+        self._timerBoard.x + gTextures.time_board:getWidth() / 2 - timerText:getWidth() / 2,
+        self._timerBoard.y + gTextures.time_board:getHeight() / 2 - timerText:getHeight() / 2 + 6
+    )
 end
 
 function PlayState:update(dt)
@@ -52,6 +60,11 @@ function PlayState:update(dt)
         end
     elseif (self._pauseButton._selected) then
         self._pauseButton:onDeselect()
+    end
+
+    self._timer = self._timer - dt
+    if (self._timer < 0) then
+    -- gStateMachine:change("end")
     end
 end
 
@@ -73,13 +86,16 @@ function PlayState:enter(params)
             -10,
             gTextures.score_boards.one_player
         )
+
+        self._timer = params.timer
+        self._timerBoard = {x = 35, y = 230}
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
         PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 146, 91
 
         self._pauseButton:setPos(
             PLAYSTATE_WINDOW_WIDTH / 2 - self._pauseButton._textures[self._pauseButton._currentTexture]:getWidth() / 2,
-            250
+            300
         )
 
         self._player1 =
@@ -98,6 +114,7 @@ function PlayState:enter(params)
             0,
             gTextures.score_boards.p1
         )
+
         self._player2 =
             Player(
             PLAYSTATE_WINDOW_WIDTH / 2 + PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING,
@@ -112,5 +129,8 @@ function PlayState:enter(params)
             0,
             gTextures.score_boards.p2
         )
+
+        self._timer = params.timer
+        self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}
     end
 end

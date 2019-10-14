@@ -149,7 +149,8 @@ gTextures = {
     ["background-large"] = love.graphics.newImage("assets/background large.png"),
     ["screenplay-border"] = love.graphics.newImage("assets/screenplay border.png"),
     ["preview-board"] = love.graphics.newImage("assets/preview board.png"),
-    ["preview-board-2-players"] = love.graphics.newImage("assets/preview board 2 players.png")
+    ["preview-board-2-players"] = love.graphics.newImage("assets/preview board 2 players.png"),
+    ["time_board"] = love.graphics.newImage("assets/time board.png")
 }
 
 gSounds = {

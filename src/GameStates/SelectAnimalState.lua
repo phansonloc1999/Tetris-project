@@ -1,6 +1,8 @@
 ---@class SelectAnimalState
 SelectAnimalState = Class {__includes = BaseState}
 
+ROUND_TIMER = 15
+
 function SelectAnimalState:init()
     self._buttons = {}
     self._emotes = {}
@@ -76,7 +78,7 @@ function SelectAnimalState:enter(params)
             WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
-                gStateMachine:change("play", {numOfPlayers = 1, animal = "cat"})
+                gStateMachine:change("play", {numOfPlayers = 1, animal = "cat", timer = ROUND_TIMER})
             end,
             {
                 deselected = gTextures.buttons.cat.deselected,
@@ -90,7 +92,7 @@ function SelectAnimalState:enter(params)
             WINDOW_WIDTH / 2 + 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
-                gStateMachine:change("play", {numOfPlayers = 1, animal = "dog"})
+                gStateMachine:change("play", {numOfPlayers = 1, animal = "dog", timer = ROUND_TIMER})
             end,
             {
                 deselected = gTextures.buttons.dog.deselected,
@@ -232,7 +234,12 @@ function SelectAnimalState:enter(params)
             function()
                 gStateMachine:change(
                     "play",
-                    {numOfPlayers = 2, player1Animal = self._player1Animal, player2Animal = self._player2Animal}
+                    {
+                        numOfPlayers = 2,
+                        player1Animal = self._player1Animal,
+                        player2Animal = self._player2Animal,
+                        timer = ROUND_TIMER
+                    }
                 )
             end,
             gTextures.buttons.ok,
