@@ -1,7 +1,7 @@
 ---@class SelectAnimalState
 SelectAnimalState = Class {__includes = BaseState}
 
-ROUND_TIMER = 15
+ROUND_TIMER = 1000
 
 function SelectAnimalState:init()
     self._buttons = {}

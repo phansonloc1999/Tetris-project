@@ -138,7 +138,7 @@ gTextures = {
         I = love.graphics.newImage("assets/preview blocks/I.png"),
         O = love.graphics.newImage("assets/preview blocks/O.png"),
         T = love.graphics.newImage("assets/preview blocks/T.png"),
-        Z = love.graphics.newImage("assets/preview blocks/O.png")
+        Z = love.graphics.newImage("assets/preview blocks/Z.png")
     },
     score_boards = {
         one_player = love.graphics.newImage("assets/score boards/one player.png"),
