@@ -5,7 +5,8 @@ math.randomseed(os.time())
 gFonts = {
     small = love.graphics.newFont(12),
     medium = love.graphics.newFont(20),
-    large = love.graphics.newFont(30)
+    large = love.graphics.newFont(30),
+    default = love.graphics.setNewFont("assets/font/ARCADECLASSIC.ttf", 36)
 }
 
 gTextures = {

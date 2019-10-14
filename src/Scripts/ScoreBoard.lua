@@ -5,7 +5,7 @@ function ScoreBoard:init(x, y, texture)
     self._pos = Vector2(x, y, 0, 0)
     self._texture = texture
     self._scoreValue = 0
-    self._scoreText = love.graphics.newText(love.graphics.newFont(30), tostring(self._scoreValue))
+    self._scoreText = love.graphics.newText(love.graphics.getFont(), tostring(self._scoreValue))
 end
 
 function ScoreBoard:render()

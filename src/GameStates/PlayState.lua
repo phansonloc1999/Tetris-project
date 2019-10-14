@@ -38,11 +38,11 @@ function PlayState:render()
     self._pauseButton:render()
 
     love.graphics.draw(gTextures.time_board, self._timerBoard.x, self._timerBoard.y)
-    local timerText = love.graphics.newText(love.graphics.newFont(25), tostring(math.floor(self._timer)))
+    local timerText = love.graphics.newText(love.graphics.getFont(), tostring(math.floor(self._timer)))
     love.graphics.draw(
         timerText,
-        self._timerBoard.x + gTextures.time_board:getWidth() / 2 - timerText:getWidth() / 2,
-        self._timerBoard.y + gTextures.time_board:getHeight() / 2 - timerText:getHeight() / 2 + 6
+        math.floor(self._timerBoard.x + gTextures.time_board:getWidth() / 2 - timerText:getWidth() / 2),
+        math.floor(self._timerBoard.y + gTextures.time_board:getHeight() / 2 - timerText:getHeight() / 2 + 6)
     )
 end
 
