@@ -35,6 +35,7 @@ function PlayState:render()
         self._player2._nextTetromino:render()
     end
 
+    love.graphics.setColor(1, 1, 1)
     self._pauseButton:render()
 
     love.graphics.draw(gTextures.time_board, self._timerBoard.x, self._timerBoard.y)
@@ -77,7 +78,7 @@ function PlayState:enter(params)
             WINDOW_WIDTH - PLAYZONE_WIDTH - 20,
             30,
             WINDOW_WIDTH - PLAYZONE_WIDTH - 70 - gTextures["preview-board"]:getWidth(),
-            120,
+            110,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
             {rotate = "space", left = "a", right = "d", accelerate = "s"},
@@ -88,7 +89,7 @@ function PlayState:enter(params)
         )
 
         self._timer = params.timer
-        self._timerBoard = {x = 35, y = 230}
+        self._timerBoard = {x = 35, y = 235}
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
         PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 146, 91
@@ -109,8 +110,7 @@ function PlayState:enter(params)
             {rotate = "space", left = "a", right = "d", accelerate = "s"},
             params.player1Animal,
             PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING + PLAYZONE_WIDTH -
-                gTextures.score_boards.p1:getWidth() +
-                15,
+                gTextures.score_boards.p1:getWidth(),
             0,
             gTextures.score_boards.p1
         )
@@ -125,7 +125,7 @@ function PlayState:enter(params)
             PREVIEW_FRAME_WIDTH / 2,
             {rotate = "up", left = "left", right = "right", accelerate = "down"},
             params.player2Animal,
-            -PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING - 10,
+            -PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING,
             0,
             gTextures.score_boards.p2
         )

@@ -7,7 +7,7 @@ CLEARED_BLOCK_SCORE = 10
 BLOCK_MATRIX_ROW, BLOCK_MATRIX_COLUMN =
     (PLAYZONE_HEIGHT + (BLOCK_HEIGHT) * 4) / BLOCK_HEIGHT,
     PLAYZONE_WIDTH / BLOCK_WIDTH
-BLOCK_SCORE = 10
+BLOCK_SCORE = 1
 PLAYZONE_TO_PREVIEW_SPACING = 50
 
 local BLOCK_FLASHING_FRAME_DURATION = 0.3
@@ -96,8 +96,8 @@ function Player:render()
     for i = 1, #self._scoreIncreaseEffects do
         love.graphics.setColor(0, 1, 0, self._scoreIncreaseEffects[i].opacity)
         love.graphics.printf(
-            "+ " .. BLOCK_SCORE * BLOCK_MATRIX_COLUMN,
-            love.graphics.newFont(18),
+            BLOCK_SCORE * BLOCK_MATRIX_COLUMN,
+            gFonts.default_small,
             self._scoreIncreaseEffects[i].renderX,
             self._scoreIncreaseEffects[i].renderY,
             100
