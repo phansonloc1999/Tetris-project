@@ -69,6 +69,13 @@ function Player:init(
 
     self._scoreBoard =
         ScoreBoard(self._PLAYZONE_X + scoreBoardXOffset, self._PLAYZONE_Y + scoreBoardYOffset, scoreBoardTexture)
+    self._foodEffect =
+        FoodEffect(
+        50,
+        400,
+        gTextures.small_avatar_inmatch[self._animal .. "_normal"],
+        self._animal == "dog" and gTextures.small_avatar_inmatch.beefsteak or gTextures.small_avatar_inmatch.fish
+    )
 end
 
 function Player:render()
@@ -92,6 +99,8 @@ function Player:render()
     self._nextTetromino:render()
 
     self._scoreBoard:render()
+
+    self._foodEffect:render()
 
     for i = 1, #self._scoreIncreaseEffects do
         love.graphics.setColor(0, 1, 0, self._scoreIncreaseEffects[i].opacity)
@@ -353,6 +362,8 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                     )
                 end
             )
+
+            self._foodEffect:start()
         end
     end
     return clearedRows

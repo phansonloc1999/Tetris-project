@@ -78,7 +78,7 @@ function PlayState:enter(params)
             WINDOW_WIDTH - PLAYZONE_WIDTH - 20,
             30,
             WINDOW_WIDTH - PLAYZONE_WIDTH - 70 - gTextures["preview-board"]:getWidth(),
-            110,
+            130,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
             {rotate = "space", left = "a", right = "d", accelerate = "s"},
@@ -89,7 +89,9 @@ function PlayState:enter(params)
         )
 
         self._timer = params.timer
-        self._timerBoard = {x = 35, y = 235}
+        self._timerBoard = {x = 45, y = 235}
+
+        self._player1._foodEffect:setPos(75, 390)
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
         PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 146, 91
@@ -114,6 +116,10 @@ function PlayState:enter(params)
             0,
             gTextures.score_boards.p1
         )
+        self._player1._foodEffect:setPos(
+            PLAYSTATE_WINDOW_WIDTH / 2 - 30 - gTextures.small_avatar_inmatch.cat_normal:getWidth(),
+            400
+        )
 
         self._player2 =
             Player(
@@ -129,6 +135,7 @@ function PlayState:enter(params)
             0,
             gTextures.score_boards.p2
         )
+        self._player2._foodEffect:setPos(PLAYSTATE_WINDOW_WIDTH / 2 + 30, 400)
 
         self._timer = params.timer
         self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}

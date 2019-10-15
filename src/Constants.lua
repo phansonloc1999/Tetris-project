@@ -145,6 +145,12 @@ gTextures = {
         p1 = love.graphics.newImage("assets/score boards/P1.png"),
         p2 = love.graphics.newImage("assets/score boards/P2.png")
     },
+    small_avatar_inmatch = {
+        cat_normal = love.graphics.newImage("assets/food effects/cat normal.png"),
+        dog_normal = love.graphics.newImage("assets/food effects/dog normal.png"),
+        beefsteak = love.graphics.newImage("assets/food effects/beefsteak.png"),
+        fish = love.graphics.newImage("assets/food effects/fish.png")
+    },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
     ["pause-background"] = love.graphics.newImage("assets/pause/pause background.png"),

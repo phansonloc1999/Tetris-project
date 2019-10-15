@@ -62,7 +62,7 @@ function PauseState:enter(params)
                     player1Animal = self._pausedPlayState._player1._animal,
                     player2Animal = self._pausedPlayState._player2 ~= nil and self._pausedPlayState._player2._animal or
                         "none",
-                    timer = ROUND_TIMER
+                    timer = MATCH_TIMER
                 }
             )
         end,
