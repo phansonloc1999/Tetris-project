@@ -7,7 +7,7 @@ gFonts = {
     medium = love.graphics.newFont(20),
     large = love.graphics.newFont(30),
     default = love.graphics.setNewFont("assets/font/ARCADECLASSIC.ttf", 36),
-    default_small = love.graphics.newFont("assets/font/ARCADECLASSIC.TTF", 28)
+    default_small = love.graphics.newFont("assets/font/ARCADECLASSIC.ttf", 28)
 }
 
 gTextures = {
