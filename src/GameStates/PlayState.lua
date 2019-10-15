@@ -9,8 +9,8 @@ function PlayState:init()
 
     self._pauseButton =
         RectButton(
-        60,
-        300,
+        62,
+        330,
         function()
             gStateMachine:change("pause", {pausedPlayState = self})
         end,
@@ -89,9 +89,9 @@ function PlayState:enter(params)
         )
 
         self._timer = params.timer
-        self._timerBoard = {x = 45, y = 235}
+        self._timerBoard = {x = 45, y = 250}
 
-        self._player1._foodEffect:setPos(75, 390)
+        self._player1._foodEffect:setPos(75, 410)
     elseif (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
         PREVIEW_FRAME_WIDTH, PREVIEW_FRAME_HEIGHT = 146, 91
