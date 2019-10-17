@@ -147,7 +147,11 @@ gTextures = {
     },
     small_avatar_inmatch = {
         cat_normal = love.graphics.newImage("assets/food effects/cat normal.png"),
+        cat_sad = love.graphics.newImage("assets/food effects/cat sad.png"),
+        cat_happy = love.graphics.newImage("assets/food effects/cat happy.png"),
         dog_normal = love.graphics.newImage("assets/food effects/dog normal.png"),
+        dog_sad = love.graphics.newImage("assets/food effects/dog sad.png"),
+        dog_happy = love.graphics.newImage("assets/food effects/dog happy.png"),
         beefsteak = love.graphics.newImage("assets/food effects/beefsteak.png"),
         fish = love.graphics.newImage("assets/food effects/fish.png")
     },

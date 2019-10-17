@@ -14,6 +14,8 @@ local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
 GENERATED_TETROMINOES_HISTORY = {}
 
+MOVEMENT_KEYPRESS_CHECK_INTERVAL = 0.08
+
 function Player:init(
     playzoneX,
     playzoneY,
@@ -73,9 +75,14 @@ function Player:init(
         FoodEffect(
         50,
         400,
-        gTextures.small_avatar_inmatch[self._animal .. "_normal"],
+        {
+            normal = gTextures.small_avatar_inmatch[self._animal .. "_normal"],
+            happy = gTextures.small_avatar_inmatch[self._animal .. "_happy"]
+        },
         self._animal == "dog" and gTextures.small_avatar_inmatch.beefsteak or gTextures.small_avatar_inmatch.fish
     )
+
+    self._movementKeyPressInterval = MOVEMENT_KEYPRESS_CHECK_INTERVAL
 end
 
 function Player:render()
@@ -160,28 +167,34 @@ function Player:tetrominoMovementUpdate(dt)
         self:updateActiveBlocksInMatrix()
         self:checkActiveForObstruction()
     end
-    if (love.keyboard.wasPressed(self._keyConfigs.left)) then
-        self:removeActiveBlocksInMatrix()
-        self._activeTetromino:moveLeft()
-        self._activeTetromino:getIndividualBlocks()
 
-        if (self:verifyMovement() == "invalid") then
-            self._activeTetromino:moveRight()
-            self._activeTetromino:getIndividualBlocks()
-        end
-        self:updateActiveBlocksInMatrix()
-        self:checkActiveForObstruction()
-    elseif (love.keyboard.wasPressed(self._keyConfigs.right)) then
-        self:removeActiveBlocksInMatrix()
-        self._activeTetromino:moveRight()
-        self._activeTetromino:getIndividualBlocks()
-
-        if (self:verifyMovement() == "invalid") then
+    if (self._movementKeyPressInterval <= 0) then
+        if (love.keyboard.isDown(self._keyConfigs.left)) then
+            self:removeActiveBlocksInMatrix()
             self._activeTetromino:moveLeft()
             self._activeTetromino:getIndividualBlocks()
+
+            if (self:verifyMovement() == "invalid") then
+                self._activeTetromino:moveRight()
+                self._activeTetromino:getIndividualBlocks()
+            end
+            self:updateActiveBlocksInMatrix()
+            self:checkActiveForObstruction()
+        elseif (love.keyboard.isDown(self._keyConfigs.right)) then
+            self:removeActiveBlocksInMatrix()
+            self._activeTetromino:moveRight()
+            self._activeTetromino:getIndividualBlocks()
+
+            if (self:verifyMovement() == "invalid") then
+                self._activeTetromino:moveLeft()
+                self._activeTetromino:getIndividualBlocks()
+            end
+            self:updateActiveBlocksInMatrix()
+            self:checkActiveForObstruction()
         end
-        self:updateActiveBlocksInMatrix()
-        self:checkActiveForObstruction()
+        self._movementKeyPressInterval = MOVEMENT_KEYPRESS_CHECK_INTERVAL
+    else
+        self._movementKeyPressInterval = self._movementKeyPressInterval - dt
     end
 
     if (love.keyboard.isDown(self._keyConfigs.accelerate)) then
