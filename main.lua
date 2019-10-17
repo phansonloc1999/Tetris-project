@@ -6,8 +6,6 @@ dbg.tcpListen("localhost", 9966)
 require("src/Dependencies")
 
 function love.load()
-    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
-
     love.keyboard.keysPressed = {}
     love.mouse.buttonsPressed = {}
 
