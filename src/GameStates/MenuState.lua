@@ -7,7 +7,7 @@ function MenuState:init()
 
     self._buttons.startButton =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.start.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.start.deselected:getWidth() / 2,
         150,
         function()
             gStateMachine:change("select-mode")
@@ -21,7 +21,7 @@ function MenuState:init()
 
     self._buttons.aboutButton =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.about.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.about.deselected:getWidth() / 2,
         self._buttons.startButton:getY() + self._buttons.startButton:getHeight() + BUTTON_SPACING,
         function()
         end,
@@ -34,7 +34,7 @@ function MenuState:init()
 
     self._buttons.optionButton =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.option.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.option.deselected:getWidth() / 2,
         self._buttons.aboutButton:getY() + self._buttons.aboutButton:getHeight() + BUTTON_SPACING,
         function()
         end,
@@ -47,7 +47,7 @@ function MenuState:init()
 
     self._buttons.quitButton =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.menu_quit.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.menu_quit.deselected:getWidth() / 2,
         self._buttons.optionButton:getY() + self._buttons.optionButton:getHeight() + BUTTON_SPACING,
         function()
             love.event.quit()
@@ -126,11 +126,11 @@ function MenuState:init()
 end
 
 function MenuState:render()
-    love.graphics.draw(gTextures.background)
+    love.graphics.draw(gTextures.background, PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     love.graphics.draw(
         gTextures.titles.menu,
-        WINDOW_WIDTH / 2 - gTextures.titles.menu:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.menu:getWidth() / 2,
         TITLE_TOP_SPACING
     )
 

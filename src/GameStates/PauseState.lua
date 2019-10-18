@@ -6,7 +6,7 @@ function PauseState:init()
 end
 
 function PauseState:render()
-    love.graphics.draw(gTextures["pause-background"])
+    love.graphics.draw(gTextures["pause-background"], PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     for key, button in pairs(self._buttons) do
         button:render()
@@ -28,8 +28,6 @@ function PauseState:update(dt)
 end
 
 function PauseState:enter(params)
-    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
-
     self._pausedPlayState = params.pausedPlayState ---@type PlayState
 
     local SPACING_BETWEEN_BUTTONS = 17
@@ -37,12 +35,9 @@ function PauseState:enter(params)
     self._buttons = {}
     self._buttons.back =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT / 2 - (SPACING_BETWEEN_BUTTONS * 3 + gTextures.buttons.back.deselected:getHeight() * 4) / 2 + 50,
         function(pauseState)
-            if (pauseState._pausedPlayState._numOfPlayers == 2) then
-                love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
-            end
             gStateMachine.current = pauseState._pausedPlayState
         end,
         gTextures.buttons.back,

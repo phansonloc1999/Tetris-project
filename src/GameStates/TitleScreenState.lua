@@ -5,7 +5,8 @@ function TitleScreenState:init()
     self._buttons = {}
     self._buttons.go =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.go.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.go.deselected:getWidth() / 2 + PLAYSTATE_WINDOW_WIDTH / 2 -
+            WINDOW_WIDTH / 2,
         300,
         function()
             gStateMachine:change("menu")
@@ -17,7 +18,7 @@ function TitleScreenState:init()
         "deselected"
     )
 
-    self._buttons.back =
+    self._buttons.quit =
         RectButton(
         self._buttons.go:getX(),
         self._buttons.go:getY() + self._buttons.go:getHeight() + 20,
@@ -33,7 +34,7 @@ function TitleScreenState:init()
 end
 
 function TitleScreenState:render()
-    love.graphics.draw(gTextures["title-screen"])
+    love.graphics.draw(gTextures["title-screen"], PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     for key, button in pairs(self._buttons) do
         button:render()

@@ -9,7 +9,7 @@ function SelectAnimalState:init()
 
     self._buttons.back =
         RectButton(
-        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT - 70,
         function()
             gStateMachine:change("select-mode")
@@ -28,11 +28,11 @@ function SelectAnimalState:init()
 end
 
 function SelectAnimalState:render()
-    love.graphics.draw(gTextures.background)
+    love.graphics.draw(gTextures.background, PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     love.graphics.draw(
         gTextures.titles.animalselect,
-        WINDOW_WIDTH / 2 - gTextures.titles.animalselect:getWidth() / 2,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.animalselect:getWidth() / 2,
         TITLE_TOP_SPACING
     )
 
@@ -75,7 +75,7 @@ function SelectAnimalState:enter(params)
     if (self._numOfPlayer == 1) then
         self._buttons.cat =
             RectButton(
-            WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
+            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
                 gStateMachine:change("play", {numOfPlayers = 1, animal = "cat", timer = MATCH_TIMER})
@@ -89,7 +89,7 @@ function SelectAnimalState:enter(params)
 
         self._buttons.dog =
             RectButton(
-            WINDOW_WIDTH / 2 + 50,
+            PLAYSTATE_WINDOW_WIDTH / 2 + 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
                 gStateMachine:change("play", {numOfPlayers = 1, animal = "dog", timer = MATCH_TIMER})
@@ -140,7 +140,7 @@ function SelectAnimalState:enter(params)
 
         self._emotes.player1Animal =
             RectButton(
-            WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50 +
+            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50 +
                 gTextures.buttons.oneplayer.deselected:getWidth() / 2 -
                 gTextures.mode_emotes.oneplayer.deselected:getWidth() / 2,
             WINDOW_HEIGHT / 2 + 30 - gTextures.mode_emotes.oneplayer.deselected:getHeight(),
@@ -152,7 +152,7 @@ function SelectAnimalState:enter(params)
 
         self._emotes.player2Animal =
             RectButton(
-            WINDOW_WIDTH / 2 + 50 + gTextures.buttons.twoplayer.deselected:getWidth() / 2 -
+            PLAYSTATE_WINDOW_WIDTH / 2 + 50 + gTextures.buttons.twoplayer.deselected:getWidth() / 2 -
                 gTextures.mode_emotes.twoplayer.deselected:getWidth() / 2,
             self._emotes.player1Animal:getY(),
             function()
