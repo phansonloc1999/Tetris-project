@@ -14,7 +14,7 @@ local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
 GENERATED_TETROMINOES_HISTORY = {}
 
-MOVEMENT_KEYPRESS_CHECK_INTERVAL = 0.08
+MOVEMENT_KEYPRESS_CHECK_INTERVAL = 0.07
 
 function Player:init(
     playzoneX,
@@ -323,6 +323,8 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                     )
                 end,
                 function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    love.audio.play(gSounds.scoring)
+
                     Timer.tween(BLOCK_FLASHING_FRAME_DURATION, clearBlockDefinitions):finish(
                         function()
                             go(visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
@@ -357,8 +359,6 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                             opacity = 1
                         }
                     )
-
-                    love.audio.play(gSounds.scoring)
 
                     Timer.tween(
                         2,
