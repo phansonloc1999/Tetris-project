@@ -18,6 +18,7 @@ require("src/GameStates/SelectModeState")
 require("src/GameStates/SelectAnimalState")
 require("src/GameStates/PlayState")
 require("src/GameStates/PauseState")
+require("src/GameStates/GameOverState")
 require("src/StateMachine")
 
 require("src/Scripts/Block")

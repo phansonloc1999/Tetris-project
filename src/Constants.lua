@@ -75,12 +75,20 @@ gTextures = {
         pause = {
             deselected = love.graphics.newImage("assets/buttons/pause deselected.png"),
             selected = love.graphics.newImage("assets/buttons/pause selected.png")
+        },
+        restart = {
+            deselected = love.graphics.newImage("assets/buttons/restart deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/restart selected.png")
         }
     },
     titles = {
         menu = love.graphics.newImage("assets/titles/menu.png"),
         mode = love.graphics.newImage("assets/titles/game mode.png"),
-        animalselect = love.graphics.newImage("assets/titles/animal select.png")
+        animalselect = love.graphics.newImage("assets/titles/animal select.png"),
+        win = love.graphics.newImage("assets/titles/win.png"),
+        lose = love.graphics.newImage("assets/titles/lose.png"),
+        player1 = love.graphics.newImage("assets/game over/player 1.png"),
+        player2 = love.graphics.newImage("assets/game over/player 2.png")
     },
     pet_emotes = {
         pet1 = {
@@ -105,11 +113,15 @@ gTextures = {
     animal_emotes = {
         dog = {
             deselected = love.graphics.newImage("assets/select animal/1 player pet 1 deselected.png"),
-            selected = love.graphics.newImage("assets/select animal/1 player pet 1 selected.png")
+            selected = love.graphics.newImage("assets/select animal/1 player pet 1 selected.png"),
+            happy = love.graphics.newImage("assets/game over/dog happy.png"),
+            sad = love.graphics.newImage("assets/game over/dog sad.png")
         },
         cat = {
             deselected = love.graphics.newImage("assets/select animal/1 player pet 2 deselected.png"),
-            selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png")
+            selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png"),
+            happy = love.graphics.newImage("assets/game over/cat happy.png"),
+            sad = love.graphics.newImage("assets/game over/cat sad.png")
         }
     },
     blocks = {

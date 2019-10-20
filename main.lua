@@ -28,6 +28,9 @@ function love.load()
         end,
         ["pause"] = function()
             return PauseState()
+        end,
+        ["game_over"] = function()
+            return GameOverState()
         end
     }
     gStateMachine:change("title-screen")

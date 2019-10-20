@@ -68,8 +68,27 @@ function PlayState:update(dt)
     end
 
     self._timer = self._timer - dt
-    if (self._timer < 0) then
-    -- gStateMachine:change("end")
+    if
+        (self._timer < 0 or (self._player1._isGameOver and self._numOfPlayers == 1) or
+            (self._player1._isGameOver and self._player2._isGameOver))
+     then
+        if (self._numOfPlayers == 1) then
+            gStateMachine:change(
+                "game_over",
+                {numOfPlayers = 1, animal = self._player1._animal, score = self._player1._scoreBoard._scoreValue}
+            )
+        else
+            gStateMachine:change(
+                "game_over",
+                {
+                    numOfPlayers = 2,
+                    player1Animal = self._player1._animal,
+                    player2Animal = self._player2._animal,
+                    player1Score = self._player1._scoreBoard._scoreValue,
+                    player2Score = self._player2._scoreBoard._scoreValue
+                }
+            )
+        end
     end
 end
 
