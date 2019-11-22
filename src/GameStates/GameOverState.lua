@@ -186,7 +186,7 @@ function GameOverState:enter(params)
 
             self._player1Animation =
                 Timer.every(
-                1,
+                0.5,
                 function()
                     self._player1.currentTexture = self._player1.currentTexture == "normal" and "sad" or "normal"
                 end
@@ -194,7 +194,7 @@ function GameOverState:enter(params)
 
             self._player2Animation =
                 Timer.every(
-                1,
+                0.5,
                 function()
                     self._player2.currentTexture = self._player2.currentTexture == "normal" and "happy" or "normal"
                 end
