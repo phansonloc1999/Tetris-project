@@ -169,12 +169,12 @@ gTextures = {
         fish = love.graphics.newImage("assets/food effects/fish.png")
     },
     option_state = {
-        player1 = love.graphics.newImage("assets/about/player 1.png"),
-        player2 = love.graphics.newImage("assets/about/player 2.png"),
-        button_names = love.graphics.newImage("assets/about/button names.png"),
-        spaceads_settings = love.graphics.newImage("assets/about/keypad settings 1.png"),
-        updownleftright_settings = love.graphics.newImage("assets/about/keypad settings 2.png"),
-        time_limit_setting = love.graphics.newImage("assets/about/time limit setting.png")
+        player1 = love.graphics.newImage("assets/option/player 1.png"),
+        player2 = love.graphics.newImage("assets/option/player 2.png"),
+        button_names = love.graphics.newImage("assets/option/button names.png"),
+        spaceads_settings = love.graphics.newImage("assets/option/keypad settings 1.png"),
+        updownleftright_settings = love.graphics.newImage("assets/option/keypad settings 2.png"),
+        time_limit_setting = love.graphics.newImage("assets/option/time limit setting.png")
     },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),
