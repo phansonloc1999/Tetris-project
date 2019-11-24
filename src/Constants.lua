@@ -75,12 +75,22 @@ gTextures = {
         pause = {
             deselected = love.graphics.newImage("assets/buttons/pause deselected.png"),
             selected = love.graphics.newImage("assets/buttons/pause selected.png")
+        },
+        restart = {
+            deselected = love.graphics.newImage("assets/buttons/restart deselected.png"),
+            selected = love.graphics.newImage("assets/buttons/restart selected.png")
         }
     },
     titles = {
         menu = love.graphics.newImage("assets/titles/menu.png"),
         mode = love.graphics.newImage("assets/titles/game mode.png"),
-        animalselect = love.graphics.newImage("assets/titles/animal select.png")
+        animalselect = love.graphics.newImage("assets/titles/animal select.png"),
+        win = love.graphics.newImage("assets/titles/win.png"),
+        lose = love.graphics.newImage("assets/titles/lose.png"),
+        player1 = love.graphics.newImage("assets/game over/player 1.png"),
+        player2 = love.graphics.newImage("assets/game over/player 2.png"),
+        option = love.graphics.newImage("assets/titles/option.png"),
+        about = love.graphics.newImage("assets/titles/about.png")
     },
     pet_emotes = {
         pet1 = {
@@ -105,11 +115,15 @@ gTextures = {
     animal_emotes = {
         dog = {
             deselected = love.graphics.newImage("assets/select animal/1 player pet 1 deselected.png"),
-            selected = love.graphics.newImage("assets/select animal/1 player pet 1 selected.png")
+            selected = love.graphics.newImage("assets/select animal/1 player pet 1 selected.png"),
+            happy = love.graphics.newImage("assets/game over/dog happy.png"),
+            sad = love.graphics.newImage("assets/game over/dog sad.png")
         },
         cat = {
             deselected = love.graphics.newImage("assets/select animal/1 player pet 2 deselected.png"),
-            selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png")
+            selected = love.graphics.newImage("assets/select animal/1 player pet 2 selected.png"),
+            happy = love.graphics.newImage("assets/game over/cat happy.png"),
+            sad = love.graphics.newImage("assets/game over/cat sad.png")
         }
     },
     blocks = {
@@ -154,6 +168,14 @@ gTextures = {
         dog_happy = love.graphics.newImage("assets/food effects/dog happy.png"),
         beefsteak = love.graphics.newImage("assets/food effects/beefsteak.png"),
         fish = love.graphics.newImage("assets/food effects/fish.png")
+    },
+    option_state = {
+        player1 = love.graphics.newImage("assets/option/player 1.png"),
+        player2 = love.graphics.newImage("assets/option/player 2.png"),
+        button_names = love.graphics.newImage("assets/option/button names.png"),
+        spaceads_settings = love.graphics.newImage("assets/option/keypad settings 1.png"),
+        updownleftright_settings = love.graphics.newImage("assets/option/keypad settings 2.png"),
+        time_limit_setting = love.graphics.newImage("assets/option/time limit setting.png")
     },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),

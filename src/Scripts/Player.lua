@@ -14,7 +14,7 @@ local BLOCK_FLASHING_FRAME_DURATION = 0.3
 
 GENERATED_TETROMINOES_HISTORY = {}
 
-MOVEMENT_KEYPRESS_CHECK_INTERVAL = 0.08
+MOVEMENT_KEYPRESS_CHECK_INTERVAL = 0.07
 
 function Player:init(
     playzoneX,
@@ -83,6 +83,8 @@ function Player:init(
     )
 
     self._movementKeyPressInterval = MOVEMENT_KEYPRESS_CHECK_INTERVAL
+
+    self._isGameOver = false
 end
 
 function Player:render()
@@ -122,34 +124,40 @@ function Player:render()
 end
 
 function Player:update(dt)
-    if (self._activeTetromino:isStopped() and not self._isRemovingBlocks) then
-        self:rowClearanceUpdate()
+    if (not self._isGameOver) then
+        if (self._activeTetromino:isStopped() and not self._isRemovingBlocks) then
+            self:rowClearanceUpdate()
+
+            if (self._activeTetromino._pos._y < 0) then
+                self._isGameOver = true
+            end
+
+            if (not self._isRemovingBlocks) then
+                self._nextTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
+                self._activeTetromino = self._nextTetromino
+                self._activeTetromino:getIndividualBlocks()
+                self:updateActiveBlocksInMatrix()
+                self._nextTetromino = self:getNewTetromino()
+                self._nextTetromino:toPreview(self._PREVIEW_FRAME_X + self._PREVIEW_X_OFFSET, self._PREVIEW_FRAME_Y)
+                self._nextTetromino:getIndividualBlocks()
+            end
+        end
 
         if (not self._isRemovingBlocks) then
-            self._nextTetromino:toSpawn(self._PLAYZONE_X, self._PLAYZONE_Y)
-            self._activeTetromino = self._nextTetromino
-            self._activeTetromino:getIndividualBlocks()
-            self:updateActiveBlocksInMatrix()
-            self._nextTetromino = self:getNewTetromino()
-            self._nextTetromino:toPreview(self._PREVIEW_FRAME_X + self._PREVIEW_X_OFFSET, self._PREVIEW_FRAME_Y)
-            self._nextTetromino:getIndividualBlocks()
-        end
-    end
+            if (self._activeTetromino._accelerateTimer > 0) then
+                self._activeTetromino._accelerateTimer = math.max(0, self._activeTetromino._accelerateTimer - dt)
+            else
+                self:activeTetroFallUpdate()
+                self._activeTetromino._accelerateTimer = 1
+                self:checkActiveForObstruction()
+            end
 
-    if (not self._isRemovingBlocks) then
-        if (self._activeTetromino._accelerateTimer > 0) then
-            self._activeTetromino._accelerateTimer = math.max(0, self._activeTetromino._accelerateTimer - dt)
-        else
-            self:activeTetroFallUpdate()
-            self._activeTetromino._accelerateTimer = 1
-            self:checkActiveForObstruction()
-        end
+            self:tetrominoMovementUpdate(dt)
 
-        self:tetrominoMovementUpdate(dt)
-
-        if (self._activeTetromino:reachedBottom(self._PLAYZONE_Y)) then
-            self._activeTetromino:stop()
-            return
+            if (self._activeTetromino:reachedBottom(self._PLAYZONE_Y)) then
+                self._activeTetromino:stop()
+                return
+            end
         end
     end
 end
@@ -323,6 +331,8 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                     )
                 end,
                 function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
+                    love.audio.play(gSounds.scoring)
+
                     Timer.tween(BLOCK_FLASHING_FRAME_DURATION, clearBlockDefinitions):finish(
                         function()
                             go(visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
@@ -357,8 +367,6 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                             opacity = 1
                         }
                     )
-
-                    love.audio.play(gSounds.scoring)
 
                     Timer.tween(
                         2,

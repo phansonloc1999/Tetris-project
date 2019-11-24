@@ -68,8 +68,27 @@ function PlayState:update(dt)
     end
 
     self._timer = self._timer - dt
-    if (self._timer < 0) then
-    -- gStateMachine:change("end")
+    if
+        (self._timer < 0 or (self._player1._isGameOver and self._numOfPlayers == 1) or
+            (self._player1._isGameOver and self._player2._isGameOver))
+     then
+        if (self._numOfPlayers == 1) then
+            gStateMachine:change(
+                "game_over",
+                {numOfPlayers = 1, animal = self._player1._animal, score = self._player1._scoreBoard._scoreValue}
+            )
+        else
+            gStateMachine:change(
+                "game_over",
+                {
+                    numOfPlayers = 2,
+                    player1Animal = self._player1._animal,
+                    player2Animal = self._player2._animal,
+                    player1Score = self._player1._scoreBoard._scoreValue,
+                    player2Score = self._player2._scoreBoard._scoreValue
+                }
+            )
+        end
     end
 end
 
@@ -85,14 +104,14 @@ function PlayState:enter(params)
             130,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            gKeySettings.player1,
             params.animal,
             -50 - gTextures.score_boards.one_player:getWidth(),
             -10,
             gTextures.score_boards.one_player
         )
 
-        self._timer = params.timer
+        self._timer = gTimeLimit
         self._timerBoard = {x = 45 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, y = 250}
 
         self._player1._foodEffect:setPos(75 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, 410)
@@ -112,7 +131,7 @@ function PlayState:enter(params)
             130,
             gTextures["preview-board-2-players"],
             0,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            gKeySettings.player1,
             params.player1Animal,
             PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING + PLAYZONE_WIDTH -
                 gTextures.score_boards.p1:getWidth(),
@@ -132,7 +151,7 @@ function PlayState:enter(params)
             130,
             nil,
             PREVIEW_FRAME_WIDTH / 2,
-            {rotate = "up", left = "left", right = "right", accelerate = "down"},
+            gKeySettings.player2,
             params.player2Animal,
             -PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING,
             0,
@@ -140,7 +159,7 @@ function PlayState:enter(params)
         )
         self._player2._foodEffect:setPos(PLAYSTATE_WINDOW_WIDTH / 2 + 30, 400)
 
-        self._timer = params.timer
+        self._timer = gTimeLimit
         self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}
     end
 end
