@@ -3,7 +3,7 @@ OptionState = Class {__includes = BaseState}
 
 local ABOUT_Y = 10
 local BACKGROUND_LEFT_X = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.background:getWidth() / 2
-local PLAYER1_Y = ABOUT_Y + gTextures.titles.about:getHeight() - 20
+local PLAYER1_Y = ABOUT_Y + gTextures.titles.option:getHeight() - 20
 local PAGE_BUTTON_SPACING = 10
 
 KEY_SETTINGS = {
@@ -183,8 +183,8 @@ function OptionState:render()
     love.graphics.draw(gTextures.background, BACKGROUND_LEFT_X)
 
     love.graphics.draw(
-        gTextures.titles.about,
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.about:getWidth() / 2,
+        gTextures.titles.option,
+        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.option:getWidth() / 2,
         ABOUT_Y
     )
 

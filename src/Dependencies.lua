@@ -20,6 +20,7 @@ require("src/GameStates/PlayState")
 require("src/GameStates/PauseState")
 require("src/GameStates/GameOverState")
 require("src/GameStates/OptionState")
+require("src/GameStates/AboutState")
 require("src/StateMachine")
 
 require("src/Scripts/Block")

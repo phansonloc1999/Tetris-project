@@ -34,6 +34,9 @@ function love.load()
         end,
         ["option"] = function()
             return OptionState()
+        end,
+        ["about"] = function()
+            return AboutState()
         end
     }
     gStateMachine:change("title-screen")

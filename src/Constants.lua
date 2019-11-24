@@ -89,7 +89,8 @@ gTextures = {
         lose = love.graphics.newImage("assets/titles/lose.png"),
         player1 = love.graphics.newImage("assets/game over/player 1.png"),
         player2 = love.graphics.newImage("assets/game over/player 2.png"),
-        about = love.graphics.newImage("assets/titles/option.png")
+        option = love.graphics.newImage("assets/titles/option.png"),
+        about = love.graphics.newImage("assets/titles/about.png")
     },
     pet_emotes = {
         pet1 = {
