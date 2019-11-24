@@ -104,14 +104,14 @@ function PlayState:enter(params)
             130,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            gKeySettings.player1,
             params.animal,
             -50 - gTextures.score_boards.one_player:getWidth(),
             -10,
             gTextures.score_boards.one_player
         )
 
-        self._timer = params.timer
+        self._timer = gTimeLimit
         self._timerBoard = {x = 45 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, y = 250}
 
         self._player1._foodEffect:setPos(75 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, 410)
@@ -131,7 +131,7 @@ function PlayState:enter(params)
             130,
             gTextures["preview-board-2-players"],
             0,
-            {rotate = "space", left = "a", right = "d", accelerate = "s"},
+            gKeySettings.player1,
             params.player1Animal,
             PREVIEW_FRAME_WIDTH / 2 + PLAYZONE_TO_PREVIEW_SPACING + PLAYZONE_WIDTH -
                 gTextures.score_boards.p1:getWidth(),
@@ -151,7 +151,7 @@ function PlayState:enter(params)
             130,
             nil,
             PREVIEW_FRAME_WIDTH / 2,
-            {rotate = "up", left = "left", right = "right", accelerate = "down"},
+            gKeySettings.player2,
             params.player2Animal,
             -PREVIEW_FRAME_WIDTH / 2 - PLAYZONE_TO_PREVIEW_SPACING,
             0,
@@ -159,7 +159,7 @@ function PlayState:enter(params)
         )
         self._player2._foodEffect:setPos(PLAYSTATE_WINDOW_WIDTH / 2 + 30, 400)
 
-        self._timer = params.timer
+        self._timer = gTimeLimit
         self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}
     end
 end

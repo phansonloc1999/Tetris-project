@@ -88,7 +88,8 @@ gTextures = {
         win = love.graphics.newImage("assets/titles/win.png"),
         lose = love.graphics.newImage("assets/titles/lose.png"),
         player1 = love.graphics.newImage("assets/game over/player 1.png"),
-        player2 = love.graphics.newImage("assets/game over/player 2.png")
+        player2 = love.graphics.newImage("assets/game over/player 2.png"),
+        about = love.graphics.newImage("assets/titles/option.png")
     },
     pet_emotes = {
         pet1 = {
@@ -166,6 +167,14 @@ gTextures = {
         dog_happy = love.graphics.newImage("assets/food effects/dog happy.png"),
         beefsteak = love.graphics.newImage("assets/food effects/beefsteak.png"),
         fish = love.graphics.newImage("assets/food effects/fish.png")
+    },
+    option_state = {
+        player1 = love.graphics.newImage("assets/about/player 1.png"),
+        player2 = love.graphics.newImage("assets/about/player 2.png"),
+        button_names = love.graphics.newImage("assets/about/button names.png"),
+        spaceads_settings = love.graphics.newImage("assets/about/keypad settings 1.png"),
+        updownleftright_settings = love.graphics.newImage("assets/about/keypad settings 2.png"),
+        time_limit_setting = love.graphics.newImage("assets/about/time limit setting.png")
     },
     ["background"] = love.graphics.newImage("assets/background.png"),
     ["title-screen"] = love.graphics.newImage("assets/title screen.png"),

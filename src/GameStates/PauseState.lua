@@ -70,6 +70,7 @@ function PauseState:enter(params)
         self._buttons.reset:getX(),
         self._buttons.reset:getY() + self._buttons.reset:getHeight() + SPACING_BETWEEN_BUTTONS,
         function()
+            gStateMachine:change("option")
         end,
         gTextures.buttons.option,
         "deselected"

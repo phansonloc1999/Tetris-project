@@ -24,6 +24,7 @@ function MenuState:init()
         PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.about.deselected:getWidth() / 2,
         self._buttons.startButton:getY() + self._buttons.startButton:getHeight() + BUTTON_SPACING,
         function()
+            gStateMachine:change("about")
         end,
         {
             selected = gTextures.buttons.about.selected,
@@ -37,6 +38,7 @@ function MenuState:init()
         PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.option.deselected:getWidth() / 2,
         self._buttons.aboutButton:getY() + self._buttons.aboutButton:getHeight() + BUTTON_SPACING,
         function()
+            gStateMachine:change("option")
         end,
         {
             selected = gTextures.buttons.option.selected,
