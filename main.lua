@@ -55,7 +55,7 @@ function love.update(dt)
         love.timer.sleep(1 / (CAPPED_FPS / 2) - dt)
     end
 
-    require("lib/lovebird").update()
+    -- require("lib/lovebird").update()
 
     if (not gGamePaused) then
         if (gStateMachine.current._name ~= "Pause State") then
