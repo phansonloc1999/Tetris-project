@@ -8,7 +8,7 @@ function GameOverState:init()
 
     self._buttons.restart =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.restart.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.restart.deselected:getWidth() / 2,
         350,
         function()
             if (self._numOfPlayers == 1) then
@@ -37,7 +37,7 @@ function GameOverState:init()
 
     self._buttons.quit =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.menu_quit.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.menu_quit.deselected:getWidth() / 2,
         self._buttons.restart:getY() + gTextures.buttons.restart.deselected:getHeight() + 10,
         function()
             gStateMachine:change("menu")
@@ -51,59 +51,55 @@ function GameOverState:init()
 end
 
 function GameOverState:render()
-    love.graphics.draw(gTextures.background, PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
+    love.graphics.draw(gTextures.background, WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     local EMOTE_Y = 100
 
     if (self._numOfPlayers == 1) then
         love.graphics.draw(
             self._player1.textures[self._player1.currentTexture],
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2,
+            WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2,
             EMOTE_Y
         )
 
         love.graphics.draw(
             self._player1Score,
-            PLAYSTATE_WINDOW_WIDTH / 2 - self._player1Score:getWidth() / 2,
+            WINDOW_WIDTH / 2 - self._player1Score:getWidth() / 2,
             EMOTE_Y + gTextures.animal_emotes[self._player1.animal].deselected:getWidth() + 80
         )
     else
         love.graphics.draw(
             gTextures.titles.player1,
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 - 80 -
+            WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 - 80 -
                 gTextures.titles.player1:getWidth() / 2,
             EMOTE_Y - 50
         )
 
         love.graphics.draw(
             self._player1.textures[self._player1.currentTexture],
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() - 80,
+            WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() - 80,
             EMOTE_Y
         )
 
         love.graphics.draw(
             self._player1Score,
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 - 80 -
+            WINDOW_WIDTH / 2 - gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 - 80 -
                 self._player1Score:getWidth() / 2,
             EMOTE_Y + gTextures.animal_emotes[self._player1.animal].deselected:getWidth() + 50
         )
 
         love.graphics.draw(
             gTextures.titles.player2,
-            PLAYSTATE_WINDOW_WIDTH / 2 + 80 + gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 -
+            WINDOW_WIDTH / 2 + 80 + gTextures.animal_emotes[self._player1.animal].deselected:getWidth() / 2 -
                 gTextures.titles.player2:getWidth() / 2,
             EMOTE_Y - 50
         )
 
-        love.graphics.draw(
-            self._player2.textures[self._player2.currentTexture],
-            PLAYSTATE_WINDOW_WIDTH / 2 + 80,
-            EMOTE_Y
-        )
+        love.graphics.draw(self._player2.textures[self._player2.currentTexture], WINDOW_WIDTH / 2 + 80, EMOTE_Y)
 
         love.graphics.draw(
             self._player2Score,
-            PLAYSTATE_WINDOW_WIDTH / 2 + 80 + gTextures.animal_emotes[self._player2.animal].deselected:getWidth() / 2 -
+            WINDOW_WIDTH / 2 + 80 + gTextures.animal_emotes[self._player2.animal].deselected:getWidth() / 2 -
                 self._player2Score:getWidth() / 2,
             EMOTE_Y + gTextures.animal_emotes[self._player2.animal].deselected:getWidth() + 50
         )
@@ -138,6 +134,8 @@ function GameOverState:enter(params)
             currentTexture = "normal"
         }
     else
+        love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
+
         self._player1Score = love.graphics.newText(gFonts.default, params.player1Score)
         self._player1 = {animal = params.player1Animal}
         self._player2Score = love.graphics.newText(gFonts.default, params.player2Score)

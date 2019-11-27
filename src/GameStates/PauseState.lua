@@ -6,7 +6,7 @@ function PauseState:init()
 end
 
 function PauseState:render()
-    love.graphics.draw(gTextures["pause-background"], PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
+    love.graphics.draw(gTextures["pause-background"])
 
     for key, button in pairs(self._buttons) do
         button:render()
@@ -30,15 +30,22 @@ end
 function PauseState:enter(params)
     self._pausedPlayState = params.pausedPlayState ---@type PlayState
 
+    if (self._pausedPlayState._numOfPlayers == 2) then
+        love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
+    end
+
     local SPACING_BETWEEN_BUTTONS = 17
 
     self._buttons = {}
     self._buttons.back =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT / 2 - (SPACING_BETWEEN_BUTTONS * 3 + gTextures.buttons.back.deselected:getHeight() * 4) / 2 + 50,
-        function(pauseState)
-            gStateMachine.current = pauseState._pausedPlayState
+        function()
+            if (self._pausedPlayState._numOfPlayers == 2) then
+                love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+            end
+            gStateMachine.current = self._pausedPlayState
         end,
         gTextures.buttons.back,
         "deselected"
@@ -70,7 +77,7 @@ function PauseState:enter(params)
         self._buttons.reset:getX(),
         self._buttons.reset:getY() + self._buttons.reset:getHeight() + SPACING_BETWEEN_BUTTONS,
         function()
-            gStateMachine:change("option")
+            gStateMachine:change("option", {pausedPauseState = self})
         end,
         gTextures.buttons.option,
         "deselected"

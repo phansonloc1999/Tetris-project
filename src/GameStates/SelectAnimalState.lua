@@ -9,7 +9,7 @@ function SelectAnimalState:init()
 
     self._buttons.back =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT - 70,
         function()
             gStateMachine:change("select-mode")
@@ -28,11 +28,11 @@ function SelectAnimalState:init()
 end
 
 function SelectAnimalState:render()
-    love.graphics.draw(gTextures.background, PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
+    love.graphics.draw(gTextures.background, WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
 
     love.graphics.draw(
         gTextures.titles.animalselect,
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.animalselect:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.titles.animalselect:getWidth() / 2,
         TITLE_TOP_SPACING
     )
 
@@ -70,12 +70,14 @@ function SelectAnimalState:update(dt)
 end
 
 function SelectAnimalState:enter(params)
-    self._numOfPlayer = params.numOfPlayers
+    self._numOfPlayers = params.numOfPlayers
 
-    if (self._numOfPlayer == 1) then
+    if (self._numOfPlayers == 1) then
+        PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT = 500, 500
+
         self._buttons.cat =
             RectButton(
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
+            WINDOW_WIDTH / 2 - gTextures.buttons.cat.deselected:getWidth() - 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
                 gStateMachine:change("play", {numOfPlayers = 1, animal = "cat"})
@@ -89,7 +91,7 @@ function SelectAnimalState:enter(params)
 
         self._buttons.dog =
             RectButton(
-            PLAYSTATE_WINDOW_WIDTH / 2 + 50,
+            WINDOW_WIDTH / 2 + 50,
             WINDOW_HEIGHT / 2 + 50,
             function()
                 gStateMachine:change("play", {numOfPlayers = 1, animal = "dog"})
@@ -134,13 +136,15 @@ function SelectAnimalState:enter(params)
         self._buttons.cat._emoteMappings = {self._emotes.cat}
         self._buttons.dog._emoteMappings = {self._emotes.dog}
     else
+        PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT = 800, 500
+
         local NEXT_PREV_BUTTONS_SPACING = 20
 
         self._player1Animal, self._player2Animal = "cat", "cat"
 
         self._emotes.player1Animal =
             RectButton(
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50 +
+            WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50 +
                 gTextures.buttons.oneplayer.deselected:getWidth() / 2 -
                 gTextures.mode_emotes.oneplayer.deselected:getWidth() / 2,
             WINDOW_HEIGHT / 2 + 30 - gTextures.mode_emotes.oneplayer.deselected:getHeight(),
@@ -152,7 +156,7 @@ function SelectAnimalState:enter(params)
 
         self._emotes.player2Animal =
             RectButton(
-            PLAYSTATE_WINDOW_WIDTH / 2 + 50 + gTextures.buttons.twoplayer.deselected:getWidth() / 2 -
+            WINDOW_WIDTH / 2 + 50 + gTextures.buttons.twoplayer.deselected:getWidth() / 2 -
                 gTextures.mode_emotes.twoplayer.deselected:getWidth() / 2,
             self._emotes.player1Animal:getY(),
             function()

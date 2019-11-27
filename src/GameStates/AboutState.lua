@@ -4,7 +4,7 @@ AboutState = Class {__includes = BaseState}
 function AboutState:init()
     self._okButton =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.ok.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.ok.deselected:getWidth() / 2,
         420,
         function()
             gStateMachine:change("menu")
@@ -18,7 +18,7 @@ function AboutState:init()
 end
 
 function AboutState:render()
-    love.graphics.draw(gTextures.titles.about, PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.about:getWidth() / 2)
+    love.graphics.draw(gTextures.titles.about, WINDOW_WIDTH / 2 - gTextures.titles.about:getWidth() / 2)
 
     self._okButton:render()
 end
