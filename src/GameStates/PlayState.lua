@@ -9,7 +9,7 @@ function PlayState:init()
 
     self._pauseButton =
         RectButton(
-        62 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2,
+        62,
         330,
         function()
             gStateMachine:change("pause", {pausedPlayState = self})
@@ -24,7 +24,7 @@ end
 
 function PlayState:render()
     if (self._numOfPlayers == 1) then
-        love.graphics.draw(gTextures["background"], PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
+        love.graphics.draw(gTextures["background"])
     else
         love.graphics.draw(gTextures["background-large"])
     end
@@ -95,12 +95,16 @@ end
 function PlayState:enter(params)
     self._numOfPlayers = params.numOfPlayers
 
+    if (self._numOfPlayers == 2) then
+        love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+    end
+
     if (self._numOfPlayers == 1) then
         self._player1 =
             Player(
-            WINDOW_WIDTH / 2 - PLAYZONE_WIDTH - 20 + PLAYSTATE_WINDOW_WIDTH / 2,
+            WINDOW_WIDTH - PLAYZONE_WIDTH - 20,
             30,
-            WINDOW_WIDTH / 2 - PLAYZONE_WIDTH - 70 - gTextures["preview-board"]:getWidth() + PLAYSTATE_WINDOW_WIDTH / 2,
+            WINDOW_WIDTH - PLAYZONE_WIDTH - 70 - gTextures["preview-board"]:getWidth(),
             130,
             gTextures["preview-board"],
             PREVIEW_FRAME_WIDTH / 4,
@@ -112,7 +116,7 @@ function PlayState:enter(params)
         )
 
         self._timer = gTimeLimit
-        self._timerBoard = {x = 45 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, y = 250}
+        self._timerBoard = {x = 45, y = 250}
 
         self._player1._foodEffect:setPos(75 + PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2, 410)
     elseif (self._numOfPlayers == 2) then

@@ -6,7 +6,7 @@ function SelectModeState:init()
 
     self._buttons.oneplayer =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50,
+        WINDOW_WIDTH / 2 - gTextures.buttons.oneplayer.deselected:getWidth() - 50,
         WINDOW_HEIGHT / 2 + 50,
         function()
             gStateMachine:change("select-animal", {numOfPlayers = 1})
@@ -20,7 +20,7 @@ function SelectModeState:init()
 
     self._buttons.twoplayer =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 + 50,
+        WINDOW_WIDTH / 2 + 50,
         WINDOW_HEIGHT / 2 + 50,
         function()
             gStateMachine:change("select-animal", {numOfPlayers = 2})
@@ -34,7 +34,7 @@ function SelectModeState:init()
 
     self._buttons.back =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.buttons.back.deselected:getWidth() / 2,
         WINDOW_HEIGHT - 100,
         function()
             gStateMachine:change("menu")
@@ -87,11 +87,11 @@ function SelectModeState:init()
 end
 
 function SelectModeState:render()
-    love.graphics.draw(gTextures.background, PLAYSTATE_WINDOW_WIDTH / 2 - WINDOW_WIDTH / 2)
+    love.graphics.draw(gTextures.background)
 
     love.graphics.draw(
         gTextures.titles.mode,
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.mode:getWidth() / 2,
+        WINDOW_WIDTH / 2 - gTextures.titles.mode:getWidth() / 2,
         TITLE_TOP_SPACING
     )
 

@@ -2,7 +2,7 @@
 OptionState = Class {__includes = BaseState}
 
 local ABOUT_Y = 10
-local BACKGROUND_LEFT_X = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.background:getWidth() / 2
+local BACKGROUND_LEFT_X = WINDOW_WIDTH / 2 - gTextures.background:getWidth() / 2
 local PLAYER1_Y = ABOUT_Y + gTextures.titles.option:getHeight() - 20
 local PAGE_BUTTON_SPACING = 10
 
@@ -41,8 +41,8 @@ function OptionState:init()
     self._buttons = {}
     self._buttons.ok =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.ok.deselected:getWidth() / 2,
-        PLAYSTATE_WINDOW_HEIGHT - gTextures.buttons.ok.selected:getHeight() - 15,
+        WINDOW_WIDTH / 2 - gTextures.buttons.ok.deselected:getWidth() / 2,
+        WINDOW_HEIGHT - gTextures.buttons.ok.selected:getHeight() - 15,
         function()
             if (self._timeLimit.string ~= "") then
                 gStateMachine:change("menu")
@@ -57,7 +57,7 @@ function OptionState:init()
     self._buttons.prev =
         RectButton(
         self._buttons.ok._hitbox._pos._x - PAGE_BUTTON_SPACING - gTextures.buttons.prev.deselected:getWidth(),
-        PLAYSTATE_WINDOW_HEIGHT - gTextures.buttons.ok.deselected:getHeight() - 15 +
+        WINDOW_HEIGHT - gTextures.buttons.ok.deselected:getHeight() - 15 +
             gTextures.buttons.ok.deselected:getHeight() / 2 -
             gTextures.buttons.prev.deselected:getHeight() / 2 +
             5,
@@ -73,7 +73,7 @@ function OptionState:init()
     self._buttons.next =
         RectButton(
         self._buttons.ok._hitbox._pos._x + PAGE_BUTTON_SPACING + gTextures.buttons.ok.deselected:getWidth(),
-        PLAYSTATE_WINDOW_HEIGHT - gTextures.buttons.ok.deselected:getHeight() - 15 +
+        WINDOW_HEIGHT - gTextures.buttons.ok.deselected:getHeight() - 15 +
             gTextures.buttons.ok.deselected:getHeight() / 2 -
             gTextures.buttons.next.deselected:getHeight() / 2 +
             5,
@@ -102,7 +102,7 @@ function OptionState:init()
 
     self._buttons.keySettingsPlayer1Prev =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.prev.deselected:getWidth() - 115,
+        WINDOW_WIDTH / 2 - gTextures.buttons.prev.deselected:getWidth() - 115,
         PLAYER1_Y + gTextures.option_state.player1:getHeight() / 2 + 20 -
             gTextures.option_state.button_names:getHeight() / 2 +
             gTextures.buttons.prev.deselected:getHeight() / 2,
@@ -118,7 +118,7 @@ function OptionState:init()
     self._buttons.keySettingsPlayer1Prev._isOnlyInTimeSettings = true
     self._buttons.keySettingsPlayer1Next =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 + 106,
+        WINDOW_WIDTH / 2 + 106,
         PLAYER1_Y + gTextures.option_state.player1:getHeight() / 2 + 20 -
             gTextures.option_state.button_names:getHeight() / 2 +
             gTextures.buttons.next.deselected:getHeight() / 2,
@@ -135,7 +135,7 @@ function OptionState:init()
 
     self._buttons.keySettingsPlayer2Prev =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.buttons.prev.deselected:getWidth() - 115,
+        WINDOW_WIDTH / 2 - gTextures.buttons.prev.deselected:getWidth() - 115,
         PLAYER1_Y + gTextures.option_state.player1:getHeight() - 45 + gTextures.option_state.player1:getHeight() / 2 -
             gTextures.option_state.button_names:getHeight() / 2 +
             15 +
@@ -153,7 +153,7 @@ function OptionState:init()
     self._buttons.keySettingsPlayer2Prev._isOnlyInTimeSettings = true
     self._buttons.keySettingsPlayer2Next =
         RectButton(
-        PLAYSTATE_WINDOW_WIDTH / 2 + 105,
+        WINDOW_WIDTH / 2 + 105,
         PLAYER1_Y + gTextures.option_state.player1:getHeight() - 45 + gTextures.option_state.player1:getHeight() / 2 -
             gTextures.option_state.button_names:getHeight() / 2 +
             15 +
@@ -182,22 +182,18 @@ end
 function OptionState:render()
     love.graphics.draw(gTextures.background, BACKGROUND_LEFT_X)
 
-    love.graphics.draw(
-        gTextures.titles.option,
-        PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.titles.option:getWidth() / 2,
-        ABOUT_Y
-    )
+    love.graphics.draw(gTextures.titles.option, WINDOW_WIDTH / 2 - gTextures.titles.option:getWidth() / 2, ABOUT_Y)
 
     if (self._isInKeySettings) then
         -- Player 1 settings
         love.graphics.draw(
             gTextures.option_state.player1,
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.option_state.player1:getWidth() / 2,
+            WINDOW_WIDTH / 2 - gTextures.option_state.player1:getWidth() / 2,
             PLAYER1_Y
         )
         love.graphics.draw(
             gTextures.option_state.button_names,
-            PLAYSTATE_WINDOW_WIDTH / 2 -
+            WINDOW_WIDTH / 2 -
                 (gTextures.option_state.button_names:getWidth() + gTextures.option_state.spaceads_settings:getWidth()) /
                     2,
             PLAYER1_Y + gTextures.option_state.player1:getHeight() / 2 -
@@ -206,7 +202,7 @@ function OptionState:render()
         )
         love.graphics.draw(
             self._keypads.player1.texture,
-            PLAYSTATE_WINDOW_WIDTH / 2 -
+            WINDOW_WIDTH / 2 -
                 (gTextures.option_state.button_names:getWidth() + gTextures.option_state.spaceads_settings:getWidth()) /
                     2 +
                 gTextures.option_state.button_names:getWidth(),
@@ -218,12 +214,12 @@ function OptionState:render()
         -- Player 2 settings
         love.graphics.draw(
             gTextures.option_state.player2,
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.option_state.player2:getWidth() / 2,
+            WINDOW_WIDTH / 2 - gTextures.option_state.player2:getWidth() / 2,
             PLAYER1_Y + gTextures.option_state.player1:getHeight() - 45
         )
         love.graphics.draw(
             gTextures.option_state.button_names,
-            PLAYSTATE_WINDOW_WIDTH / 2 -
+            WINDOW_WIDTH / 2 -
                 (gTextures.option_state.button_names:getWidth() + gTextures.option_state.spaceads_settings:getWidth()) /
                     2,
             PLAYER1_Y + gTextures.option_state.player1:getHeight() - 45 + gTextures.option_state.player1:getHeight() / 2 -
@@ -232,7 +228,7 @@ function OptionState:render()
         )
         love.graphics.draw(
             self._keypads.player2.texture,
-            PLAYSTATE_WINDOW_WIDTH / 2 -
+            WINDOW_WIDTH / 2 -
                 (gTextures.option_state.button_names:getWidth() +
                     gTextures.option_state.updownleftright_settings:getWidth()) /
                     2 +
@@ -244,14 +240,14 @@ function OptionState:render()
     else
         love.graphics.draw(
             gTextures.option_state.time_limit_setting,
-            PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.option_state.time_limit_setting:getWidth() / 2,
-            PLAYSTATE_WINDOW_HEIGHT / 2 - gTextures.option_state.time_limit_setting:getHeight() / 2
+            WINDOW_WIDTH / 2 - gTextures.option_state.time_limit_setting:getWidth() / 2,
+            WINDOW_HEIGHT / 2 - gTextures.option_state.time_limit_setting:getHeight() / 2
         )
 
         love.graphics.draw(
             self._timeLimit.text,
-            PLAYSTATE_WINDOW_WIDTH / 2 - self._timeLimit.text:getWidth() / 2,
-            PLAYSTATE_WINDOW_HEIGHT / 2 - self._timeLimit.text:getHeight() / 2 - 25
+            WINDOW_WIDTH / 2 - self._timeLimit.text:getWidth() / 2,
+            WINDOW_HEIGHT / 2 - self._timeLimit.text:getHeight() / 2 - 25
         )
     end
 
