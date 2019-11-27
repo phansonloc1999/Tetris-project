@@ -44,8 +44,12 @@ function OptionState:init()
         WINDOW_WIDTH / 2 - gTextures.buttons.ok.deselected:getWidth() / 2,
         WINDOW_HEIGHT - gTextures.buttons.ok.selected:getHeight() - 15,
         function()
-            if (self._timeLimit.string ~= "") then
-                gStateMachine:change("menu")
+            if (self._pausedPauseState) then
+                gStateMachine.current = self._pausedPauseState
+            else
+                if (self._timeLimit.string ~= "") then
+                    gStateMachine:change("menu")
+                end
             end
         end,
         {
@@ -306,6 +310,10 @@ function OptionState:update(dt)
             self:getTimelimitValueAndText()
         end
     end
+end
+
+function OptionState:enter(params)
+    self._pausedPauseState = params.pausedPauseState
 end
 
 function OptionState:getTimelimitValueAndText()
