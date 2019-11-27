@@ -46,6 +46,11 @@ function OptionState:init()
         function()
             if (self._pausedPauseState) then
                 gStateMachine.current = self._pausedPauseState
+
+                self._pausedPauseState._pausedPlayState._player1:loadKeySettings(gKeySettings.player1)
+                if (self._pausedPauseState._pausedPlayState._numOfPlayers == 2) then
+                    self._pausedPauseState._pausedPlayState._player2:loadKeySettings(gKeySettings.player2)
+                end
             else
                 if (self._timeLimit.string ~= "") then
                     gStateMachine:change("menu")
@@ -313,7 +318,18 @@ function OptionState:update(dt)
 end
 
 function OptionState:enter(params)
-    self._pausedPauseState = params.pausedPauseState
+    self._pausedPauseState = params.pausedPauseState ---@type PauseState
+
+    if (gKeySettings.player1.accelerate == KEY_SETTINGS.spaceads_settings.accelerate) then
+        self._keypads.player1.texture = gTextures.option_state.spaceads_settings
+    else
+        self._keypads.player1.texture = gTextures.option_state.updownleftright_settings
+    end
+    if (gKeySettings.player2.accelerate == KEY_SETTINGS.spaceads_settings.accelerate) then
+        self._keypads.player2.texture = gTextures.option_state.spaceads_settings
+    else
+        self._keypads.player2.texture = gTextures.option_state.updownleftright_settings
+    end
 end
 
 function OptionState:getTimelimitValueAndText()

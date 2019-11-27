@@ -66,7 +66,7 @@ function Player:init(
         )
     end
 
-    self._keyConfigs = keyConfigs
+    self:loadKeySettings(keyConfigs)
     self._previewTexture = previewTexture
 
     self._scoreBoard =
@@ -428,4 +428,8 @@ function Player:checkActiveForObstruction()
             end
         end
     end
+end
+
+function Player:loadKeySettings(keyConfigs)
+    self._keyConfigs = keyConfigs
 end
