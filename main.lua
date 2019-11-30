@@ -1,8 +1,3 @@
-package.cpath =
-    package.cpath .. ";c:/Users/COMPUTER/.vscode/extensions/tangzx.emmylua-0.3.28/debugger/emmy/windows/x64/?.dll"
-local dbg = require("emmy_core")
-dbg.tcpListen("localhost", 9966)
-
 require("src/Dependencies")
 
 function love.load()
@@ -60,7 +55,7 @@ function love.update(dt)
         love.timer.sleep(1 / (CAPPED_FPS / 2) - dt)
     end
 
-    require("lib/lovebird").update()
+    -- require("lib/lovebird").update()
 
     if (not gGamePaused) then
         if (gStateMachine.current._name ~= "Pause State") then
