@@ -44,15 +44,51 @@ function love.load()
     gGamePaused = false
 
     gFPSCounter = love.graphics.newText(gFonts.small)
+
+    gSettingsButtons = {}
+    gSettingsButtons.sound = {
+        x = 0,
+        y = WINDOW_HEIGHT - gTextures.buttons.music.on:getWidth(),
+        current = "on",
+        textures = {
+            off = gTextures.buttons.sound.off,
+            on = gTextures.buttons.sound.on
+        },
+        onClick = function()
+            if (gSettingsButtons.sound.current == "off") then
+                AudioManager.unmuteSound()
+            else
+                AudioManager.muteSound()
+            end
+            gSettingsButtons.sound.current = gSettingsButtons.sound.current == "off" and "on" or "off"
+        end
+    }
+
+    gSettingsButtons.music = {
+        x = gSettingsButtons.sound.x + gTextures.buttons.sound.off:getWidth() + 5,
+        y = gSettingsButtons.sound.y,
+        current = "on",
+        textures = {
+            off = gTextures.buttons.music.off,
+            on = gTextures.buttons.music.on
+        },
+        onClick = function()
+            if (gSettingsButtons.music.current == "off") then
+                AudioManager.unmuteMusic()
+            else
+                AudioManager.muteMusic()
+            end
+            gSettingsButtons.music.current = gSettingsButtons.music.current == "off" and "on" or "off"
+        end
+    }
 end
 
 function love.draw()
     gStateMachine:render()
 
-    love.graphics.setColor(0, 1, 0)
-    gFPSCounter:set("FPS: " .. love.timer.getFPS())
-    love.graphics.draw(gFPSCounter, 0, WINDOW_HEIGHT - gFPSCounter:getHeight())
-    love.graphics.setColor(1, 1, 1)
+    for key, button in pairs(gSettingsButtons) do
+        love.graphics.draw(button.textures[button.current], button.x, button.y)
+    end
 end
 
 function love.update(dt)
@@ -67,7 +103,25 @@ function love.update(dt)
             Timer.update(dt)
         end
 
+        --- Game logic update code here
         gStateMachine:update(dt)
+
+        for key, button in pairs(gSettingsButtons) do
+            if
+                (checkCollision(
+                    button.x,
+                    button.y,
+                    button.textures.on:getWidth(),
+                    button.textures.on:getHeight(),
+                    love.mouse.getX(),
+                    love.mouse.getY(),
+                    1,
+                    1
+                ) and love.mouse.wasPressed(1))
+             then
+                button.onClick()
+            end
+        end
     end
 
     if (love.keyboard.wasPressed("p")) then

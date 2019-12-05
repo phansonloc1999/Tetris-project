@@ -22,6 +22,7 @@ require("src/GameStates/GameOverState")
 require("src/GameStates/OptionState")
 require("src/GameStates/AboutState")
 require("src/StateMachine")
+require("src/AudioManager")
 
 require("src/Scripts/Block")
 require("src/Scripts/Tetromino_defs")

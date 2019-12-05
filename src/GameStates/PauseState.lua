@@ -44,6 +44,10 @@ function PauseState:enter(params)
         function()
             if (self._pausedPlayState._numOfPlayers == 2) then
                 love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+
+                gSettingsButtons.sound.x =
+                    PLAYSTATE_WINDOW_WIDTH / 2 - (gTextures.buttons.sound.on:getWidth() * 2 + 5) / 2
+                gSettingsButtons.music.x = gSettingsButtons.sound.x + gTextures.buttons.sound.on:getWidth() + 5
             end
             gStateMachine.current = self._pausedPlayState
         end,

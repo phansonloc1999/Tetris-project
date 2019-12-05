@@ -79,6 +79,14 @@ gTextures = {
         restart = {
             deselected = love.graphics.newImage("assets/buttons/restart deselected.png"),
             selected = love.graphics.newImage("assets/buttons/restart selected.png")
+        },
+        music = {
+            off = love.graphics.newImage("assets/buttons/music off.png"),
+            on = love.graphics.newImage("assets/buttons/music on.png")
+        },
+        sound = {
+            off = love.graphics.newImage("assets/buttons/sound off.png"),
+            on = love.graphics.newImage("assets/buttons/sound on.png")
         }
     },
     titles = {
@@ -185,11 +193,6 @@ gTextures = {
     ["preview-board"] = love.graphics.newImage("assets/preview board.png"),
     ["preview-board-2-players"] = love.graphics.newImage("assets/preview board 2 players.png"),
     ["time_board"] = love.graphics.newImage("assets/time board.png")
-}
-
-gSounds = {
-    hover = love.audio.newSource("sounds/hover.ogg", "static"),
-    scoring = love.audio.newSource("sounds/scoring 1.wav", "static")
 }
 
 TITLE_TOP_SPACING = 20

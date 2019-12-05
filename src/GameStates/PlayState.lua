@@ -97,6 +97,9 @@ function PlayState:enter(params)
 
     if (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
+
+        gSettingsButtons.sound.x = PLAYSTATE_WINDOW_WIDTH / 2 - (gTextures.buttons.sound.on:getWidth() * 2 + 5) / 2
+        gSettingsButtons.music.x = gSettingsButtons.sound.x + gTextures.buttons.sound.on:getWidth() + 5
     end
 
     if (self._numOfPlayers == 1) then
@@ -166,4 +169,9 @@ function PlayState:enter(params)
         self._timer = gTimeLimit
         self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}
     end
+end
+
+function PlayState:exit()
+    gSettingsButtons.sound.x = 0
+    gSettingsButtons.music.x = gSettingsButtons.sound.x + gTextures.buttons.sound.on:getWidth() + 5
 end

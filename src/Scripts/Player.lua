@@ -331,7 +331,7 @@ function Player:clearCompletedRows(rowsNewlyFilled)
                     )
                 end,
                 function(go, visibleBlockDefinitions, clearBlockDefinitions, blocksPosToClear, player)
-                    love.audio.play(gSounds.scoring)
+                    AudioManager.play("scoring")
 
                     Timer.tween(BLOCK_FLASHING_FRAME_DURATION, clearBlockDefinitions):finish(
                         function()

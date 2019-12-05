@@ -64,7 +64,7 @@ end
 
 function RectButton:onSelect()
     if (not self._selected) then
-        love.audio.play(gSounds.hover)
+        AudioManager.play("hover")
 
         self._currentTexture = "selected"
 
