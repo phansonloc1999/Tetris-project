@@ -10,7 +10,7 @@ function PlayState:init()
     self._pauseButton =
         RectButton(
         62,
-        330,
+        320,
         function()
             gStateMachine:change("pause", {pausedPlayState = self})
         end,
@@ -97,9 +97,6 @@ function PlayState:enter(params)
 
     if (self._numOfPlayers == 2) then
         love.window.setMode(PLAYSTATE_WINDOW_WIDTH, PLAYSTATE_WINDOW_HEIGHT)
-
-        gSettingsButtons.sound.x = PLAYSTATE_WINDOW_WIDTH / 2 - (gTextures.buttons.sound.on:getWidth() * 2 + 5) / 2
-        gSettingsButtons.music.x = gSettingsButtons.sound.x + gTextures.buttons.sound.on:getWidth() + 5
     end
 
     if (self._numOfPlayers == 1) then
@@ -169,9 +166,26 @@ function PlayState:enter(params)
         self._timer = gTimeLimit
         self._timerBoard = {x = PLAYSTATE_WINDOW_WIDTH / 2 - gTextures.time_board:getWidth() / 2, y = 230}
     end
+
+    self:resetAudioSettingButtonsPos()
 end
 
 function PlayState:exit()
     gSettingsButtons.sound.x = 0
+    gSettingsButtons.sound.y = WINDOW_HEIGHT - gTextures.buttons.music.on:getWidth()
     gSettingsButtons.music.x = gSettingsButtons.sound.x + gTextures.buttons.sound.on:getWidth() + 5
+    gSettingsButtons.music.y = gSettingsButtons.sound.y
+end
+
+function PlayState:resetAudioSettingButtonsPos()
+    gSettingsButtons.sound.x = self._pauseButton:getX() + self._pauseButton:getWidth() + 26
+    gSettingsButtons.sound.y =
+        math.floor(
+        self._pauseButton:getY() + self._pauseButton:getHeight() / 2 - gTextures.buttons.sound.on:getHeight() / 2 - 20
+    )
+    gSettingsButtons.music.x = self._timerBoard.x + gTextures.time_board:getWidth() + 10
+    gSettingsButtons.music.y =
+        math.floor(
+        self._timerBoard.y + gTextures.time_board:getHeight() / 2 - gTextures.buttons.music.on:getHeight() / 2 + 7
+    )
 end
