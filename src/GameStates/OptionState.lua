@@ -182,9 +182,9 @@ function OptionState:init()
     self._isInKeySettings = true
 
     self._timeLimit = {
-        text = love.graphics.newText(gFonts.default, "999"),
+        text = love.graphics.newText(gFonts.default, gTimeLimit),
         value = gTimeLimit,
-        string = "999"
+        string = tostring(gTimeLimit)
     }
 end
 
