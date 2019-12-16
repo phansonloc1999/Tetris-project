@@ -91,3 +91,4 @@ end
 
 AudioManager.add("hover", "sounds/hover.ogg", "static")
 AudioManager.add("scoring", "sounds/scoring 1.wav", "static")
+AudioManager.add("theme", "sounds/theme.wav", "stream", 0.3)
