@@ -81,6 +81,8 @@ function love.load()
             gSettingsButtons.music.current = gSettingsButtons.music.current == "off" and "on" or "off"
         end
     }
+
+    AudioManager.play("theme")
 end
 
 function love.draw()
