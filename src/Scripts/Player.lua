@@ -395,11 +395,13 @@ function Player:fallAfterClearance()
         for row = self._clearedRows[i] - 1, 1, -1 do
             for column = 1, BLOCK_MATRIX_COLUMN do
                 if (self._blocks[row][column]) then
-                    self._blocks[row][column]:fall()
-                    local newRow, newColumn =
-                        self._blocks[row][column]:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
-                    self._blocks[newRow][newColumn] = self._blocks[row][column]
-                    self._blocks[row][column] = nil
+                    local newRow = row
+                    while (newRow < BLOCK_MATRIX_ROW and self._blocks[newRow + 1][column] == nil) do
+                        self._blocks[newRow][column]:fall()
+                        newRow = self._blocks[newRow][column]:getPosInMatrix(self._PLAYZONE_X, self._PLAYZONE_Y)
+                        self._blocks[newRow][column] = self._blocks[newRow - 1][column]
+                        self._blocks[newRow - 1][column] = nil
+                    end
                 end
             end
         end
